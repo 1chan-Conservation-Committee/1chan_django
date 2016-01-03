@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<div class="b-blog-panel g-clearfix">
+	<ul><!FIXME: the active section must be highlighted >
+		<!FIXME: don't hardcode urls >
+		<li class="b-blog-panel_b-add-entry">
+			<img src="{% static 'ico/add-entry.png' %}" width="16" height="16" alt="" />
+			<a href="{% url 'onechan:add_post' %}">Добавить запись</a>
+		</li>
+		<li class="b-blog-panel_b-favorites">
+			<img src="{% static 'ico/favorites.png' %}" width="16" height="16" alt="" />
+			<a href="/news/fav/">Избранные</a>
+		</li>
+		<li class="b-blog-panel_b-approved{% if True %} b-blog-panel_m-active{% endif %}"><! highlighting example >
+			<img src="{% static 'ico/tick.png' %}" width="16" height="16" alt="" />
+			<a href="{% url 'onechan:approved_posts' %}">Одобренные</a>
+		</li>
+		<li class="b-blog-panel_b-all">
+			<a href="{% url 'onechan:all_posts' %}">Все</a>
+		</li>
+	</ul>
+	<div class="b-blog-panel_b-searchmenu">
+		<!FIXME: don't hardcode urls >
+		<img src="{% static 'ico/search.png' %}" width="16" height="16" alt="" /> <a href="/news/search/">Поиск записей</a> |
+		<a href="/news/cat/">Категории</a> |
+		<a href="/news/last_comments/">Последние комментарии</a>
+	</div>
+	<!FIXME: wtf is this shit >
+	<!--
+	<?php
+		switch($this -> getParameter('section')):
+	 	case ('entry'):
+	 ?>
+
+	<div class="b-blog-panel_b-submenu">
+		<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/new.png" width="16" height="16" alt="" />
+		<a href="javascript://" class="g-disabled" id="new_comments_link">К непрочитанным комментариям</a>
+	</div>
+	<?php break; ?>
+
+	<?php
+		case ('all'):
+		case ('favorite'):
+		case ('rated'):
+		case ('category'):
+		case ('hidden'):
+	 ?>
+	-->
+	<div class="b-blog-panel_b-submenu">
+		<img src="{% static 'ico/sort.png' %}" width="16" height="16" alt="Сортировать" />
+		<!FIXME: switch classes on sorting links depending on active mode >
+		<span>По дате:</span>
+			<span>создания</span>
+		<span>|</span>
+			<!FIXME: don't fucking hardcode urls >
+			<a href="/news/sort/updated_at/" class="g-dynamic">обновления</a>
+	</div>
+</div>

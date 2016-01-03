@@ -1,0 +1,13 @@
+import django.forms as forms
+from .models import Post, Category
+
+def make_category_choices():
+    return [('', '')] + [(cat.key, cat.name) for cat in Category.objects.filter(hidden=False)]
+
+
+class NewPostForm(forms.ModelForm):
+    category = forms.ChoiceField(choices=make_category_choices, required=False)
+
+    class Meta:
+        model = Post
+        fields = ['title', 'link', 'text', 'text_full']

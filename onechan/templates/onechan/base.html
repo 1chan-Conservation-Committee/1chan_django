@@ -1,0 +1,119 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title %}1chan{% endblock %}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="icon"       type="image/x-icon" href="{% static 'ico/favicon.ico' %}" />
+	<link rel="stylesheet" type="text/css"     href="{% static 'css/production.css' %}"  media="all" />
+	<link rel="stylesheet" type="text/css"     href="{% static 'css/jquery_style/jquery-ui.css' %}" media="all" />
+</head>
+<body>
+<div class="l-wrap">
+	<div class="b-top-panel">
+		<ul>
+			<li><a href="/chat/">Анонимные чаты</a></li>
+			<li>|</li>
+			<li class="b-top-panel_m-right"><a href="http://1chan.ru/chat/support/">Обратная связь</a></li>
+		</ul>
+	</div>
+	<div class="b-header-block m-mascot-news"><!--FIXME: dynamic mascot -->
+	<div class="b-header-block_b-logotype">
+		<a href="/"><img src="{% static 'img/logo.png' %}" width="250" height="80" alt="1chan.ru" /></a>
+	</div>
+	<div class="b-header-block_b-stats" id="stats_block">
+		<p>
+			Вижу <strong id="stats_online">FIXME: users online</strong>! Всего сегодня было <strong id="stats_hosts">FIXME: daily users</strong>.<br />
+			За день постов — <strong id="stats_posts">FIXME: daily posts</strong>, скорость ~<strong id="stats_speed">FIXME: speed</strong> п/ч.
+			<span class="g-hidden" id="stats_unique_posters">FIXME: unique posters (?)</span>
+		</p>
+	</div>
+	</div>
+
+	<div class="l-left-panel-wrap">
+	    <div class="b-menu-panel">
+	         <div class="b-menu-panel_b-title">
+	            <h2>Первый канал</h2>
+	        </div>
+	        <div class="b-menu-panel_b-links">
+            <ul>
+            	<li class="m-active"><a href="{% url 'onechan:approved_posts' %}">Одобренные</a> | <a href="{% url 'onechan:all_posts' %}">Все</a></li>
+            	<li class="b-menu-panel_b-footer"><a href="/share/">сообщить новость</a></li>
+		    </ul>
+		    </div>
+		</div>
+
+	    <div class="b-menu-panel">
+	         <div class="b-menu-panel_b-title">
+	            <h2>Общение</h2>
+	        </div>
+	        <div class="b-menu-panel_b-links">
+	            <ul>
+	            	<li class="m-active"><a href="/d/">/d/ - Дискуссии об имиджбордах</a></li>
+		    	</ul>
+                <div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb;">Jabber-Конференции:<br> <u>news@conference.1chan.ru</u><br /><u>press@conference.1chan.ru</u></div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="l-content-wrap">
+	{% block content %}
+	{% endblock %}
+	</div>
+
+	<div class="l-footer-wrap m-mascot-news"><!FIXME: dynamic mascot>
+		<div class="b-underlinks">
+			<img src="{% static 'ico/rss.png' %}" width="16" height="16" alt="" />
+			<a href="/news/rss.xml">Одобренные</a> |
+			<img src="{% static 'ico/rss2.png' %}" width="16" height="16" alt="" />
+			<a href="/news/all/rss.xml">Все</a> |
+			<img src="{% static 'ico/jabber.png' %}" width="16" height="16" alt="" />
+			<a href="xmpp:bot@1chan.ru?roster;name=1chan.ru;">Jabber-бот</a>
+		</div>
+		<div class="b-footer-imgboards">
+			<h2>Имиджборды:</h2>
+			<ul>
+			<!FIXME: loop for boards >
+				<li>
+				{% if True %}<!FIXME check the board >
+					<img src="{% static 'ico/offline.png' %}" width="16" height="16" alt="Сайт недоступен" />
+					<a class="g-strike" href=""></a>
+				{% else %}
+					<img src="" width="16" height="16" alt="" />
+					<a href=""></a>
+				{% endif %}
+
+				</li>
+			</ul>
+		</div>
+		<div class="b-footer-services">
+			<h2>Другие ссылки:</h2>
+			<ul>
+			<!FIXME: loop for services >
+				<li>
+				{% if False %}<!FIXME check the service >
+					<img src="{% static 'ico/offline.png' %}" width="16" height="16" alt="Сайт недоступен" />
+					<a class="g-strike" href="http://parasha.tk">imgboard name</a>
+				{% else %}
+					<img src="http://prrrrr.pssss/favicon.ico" width="16" height="16" alt="" />
+					<a href="http://prrrrr.pssss">service name</a>
+				{% endif %}
+				</li>
+			</ul>
+		</div>
+		<div class="b-footer-copyrights">
+			<span>При копировании материалов ни в коем случае не давать ссылку на <a href="/">1chan.ru</a></span>
+		</div>
+	</div>
+</div>
+{% if debug %}
+<div class="debug-queries">
+{% for query in sql_queries %}
+	<div class="query">
+	{{query.time}} : {{query.sql}}
+	</div>
+{% endfor %}
+</div>
+{% endif %}
+</body>
+</html>

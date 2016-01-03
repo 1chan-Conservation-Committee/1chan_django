@@ -1,0 +1,79 @@
+{% load staticfiles %}
+{% url 'onechan:show_post' post_id=post.id as post_url %}
+<div class="b-blog-entry{% if post.hidden %} m-hidden{% endif %}" id="post_{{ post.id }}">
+	<div class="b-blog-entry_b-header">
+		<!FIXME: get favicons for links >
+		<img src="{% static 'ico/favicons/1chan.ru.gif' %}" width="16" height="16" alt="" />
+	{% if post.pinned %}
+		<img src="{% static 'ico/pinned.png' %}" width="16" height="16" alt="Прикрепленный пост" class="b-blog-entry_b-header_b-pinned-icon" />
+	{% endif %}
+
+	{% if post.category %}
+		<!FIXME: don't hardcode urls >
+		<a href="/news/cat/{{ post.category.id }}/" class="b-blog-entry_b-header_m-category">{{ post.category.name }}</a>
+		&rarr;
+	{% endif %}
+
+		<a href="{{ post.link| default:post_url }}"
+				{% if post.link %}class="m-external"{% endif %} >
+			{{ post.title }}
+		</a>
+
+	</div>
+	<div class="b-blog-entry_b-body g-clearfix">
+			{{ post.text }}
+		{% if full_text %}
+			{{ post.text_full }}
+		{% elif post.text_full %}
+			<p><a href="{{ post_url }}">Читать дальше</a></p>
+		{% endif %}
+        {% if post.hidden %}
+        	<p><em>{{ post.hide_reason }}</em></p>
+        {% endif %}
+	</div>
+
+	<div class="b-blog-entry_b-info" id="post_{{ post.id }}_info">
+		<!FIXME: FUCKING HARDCODED URLS IN THE ENTIRE PANEL >
+		<span class="b-blog-entry_b-info_b-control">
+			<a href="/news/fav/toggle/{{post.id}}/" class="js-favorite-button">
+				<!FIXME: implement favourites >
+				<img src="{% if True %}{% static 'ico/favorites-false.png' %}{% else %}{% static 'ico/favourites.png' %}{% endif %}" width="16" height="16" alt="" id="post_{{ post.id }}_favorite" />
+			</a>
+			<a href="#" class="js-moderator-button g-hidden">
+				<img src="{% static 'ico/settings.png' %}" width="16" height="16" alt="{{ post.id }}" />
+			</a>
+			<a href="javascript:;" class="js-hide-link g-hidden"><img src="{% static 'ico/oh-my-eyes.png' %}" width="16" height="16" alt="{{ post.id }}" /></a>
+			<span>|</span>
+		{% if post.rateable %}
+			<!FIXME: plus url >
+			<a href="/news/res/{{ post.id }}/rate_post/up/" class="js-rate-up-button">
+				<img src="{% static 'ico/plus_grey.gif' %}" width="9" height="11" alt="" />
+			</a>		
+			<strong class="g-{% if post.rating > 0 %}green{% else %}red{% endif %} js-rate">{{ post.rating }}</strong>
+			<!FIXME: minus url >
+			<a href="/news/res/{{ post.id }}/rate_post/down/" class="js-rate-down-button">
+				<img src="{% static 'ico/minus_grey.gif' %}" width="9" height="11" alt="" />
+			</a>
+			<span>|</span>
+		{% endif %}
+
+			<span>{{ post.pub_date | date:'d M Y @ H:i' }}</span>
+			<span>|</span>
+			<span>
+				<a href="{{ post_url }}" class="g-disabled">№{{post.id}}</a>
+			</span>
+			{% if post.author_board %}
+			<span>|</span>
+			<!FIXME: handle this icon shit somehow >
+			<a href="" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «»">
+				<img src="{% static 'ico/homeboards/anonymous.png' %}" width="16" height="16" alt="" />
+			</a>
+			{% endif %}
+		</span>
+		<span class="b-blog-entry_b-info_b-link">
+			<a href="{{ post_url }}">
+				{% if post.closed %}Обсуждение закрыто ({{ post.comment_set.count| default:0 }}){% else %}Обсуждение: <span class="js-comments g-bold">{{ post.comment_set.count| default:0 }}</span>{% endif %}<!FIXME: bold updated comments>
+			</a>
+		</span>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+{% extends 'onechan/base.html' %}
+{% load staticfiles %}
+{% block content %}
+{% include 'onechan/posts_list_header.html' %}
+
+<!FIXME: live updates >
+<div class="b-post-added-notify" id="post_notify">
+	Доступны новые записи, <a href="">перезагрузите страницу</a>, чтобы увидеть их.
+</div>
+
+{% for post in posts %}
+{% include 'onechan/post_partial.html' with full_text=False %}
+{% empty %}
+<div class="b-static">
+	<h1>На этой странице нет постов</h1>
+	<p>Либо их действительно нет, либо опять все сломалось.</p>
+</div>
+{% endfor %}
+{% endblock %}

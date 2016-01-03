@@ -1,0 +1,86 @@
+{% extends 'onechan/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+{% include 'onechan/posts_list_header.html' %}
+{% include 'onechan/post_partial.html' with full_text=True %}
+
+<div class="l-comments-wrap">
+{% for comment in post.comment_set.all %}
+<!FIXME: new comments>
+<div class="b-comment{% if False %} m-new{% endif %}" id="comment_{{ comment.id }}">
+	<div class="b-comment_b-info">
+		<!FIXME: js links>
+		{{ comment.pub_date| date:'d M Y @ H:i' }}, <a href="#{{ comment.id }}">№</a><a href="javascript://" class="js-paste-link" name="{{ comment.id }}">{{ comment.id }}</a>
+		<a href="#" class="js-remove-button g-hidden">
+			<img src="{% static 'ico/remove.gif' %}" width="16" height="16" alt="{{ comment.id }}" />
+		</a>
+		{% if comment.author_board %}
+		<!FIXME: handle this icon shit somehow >
+		<a href="" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «»">
+			<img src="{% static 'ico/homeboards/anonymous.png' %}" width="16" height="16" alt="" />
+		</a>
+		{% endif %}
+	</div>
+	<div class="b-comment_b-body g-clearfix">
+		{{ comment.text }}
+	</div>
+</div>
+{% endfor %}
+
+<!FIXME: implement statistics >
+<div class="b-post-statistics">
+	Читают: <strong id="post_stats_reading">FIXME</strong>{% if not post.closed %} | Отвечают: <strong id="post_stats_writing">FIXME</strong>{% endif %}
+	<span class="b-post-statistics_m-right">
+		Всего: <span id="post_stats_total">FIXME: views count</span>
+	</span>
+</div>
+
+{% if not post.closed %}
+<!FIXME: implement comment posting >
+<form action="comment_url" method="post" id="comment_form">
+<input type="text" name="email" value="" class="g-hidden" />
+<input type="hidden" name="post_id" value="{{ post.id }}" />
+<input type="hidden" name="homeboard" value="" />
+<div class="b-comment-form">
+	<strong>Комментировать:</strong>
+	<span class="b-comment-form_b-helplink">
+		<!FIXME: hardcoded url >
+		<a href="/help/markup/" target="_blank">Правила разметки</a>
+	</span>
+
+	<div>
+		<div class="b-comment-form_b-captcha">
+			<!FIXME: implement captcha >
+		</div>
+
+		<textarea id="comment_form_text" name="text" rows="5"></textarea>
+		<input type="submit" value="Отправить" />
+
+		<!FIXME: DO IT! JUST
+		DO
+		IT
+		>
+		<span class="b-homeboard-form">
+			<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
+			<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
+			<div class="b-homeboard-form_select js-homeboard-select g-hidden">
+			<?php foreach(HomeBoardHelper::getBoards() as $board => $data): ?>
+				<a href="javascript://" name="<?php echo($board); ?>" title="<?php echo($data[1]); ?>" class="js-homeboard-select-link">
+					<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
+				</a>
+			<?php endforeach; ?>
+
+			</div>
+		</span>
+
+		<span class="b-comment-form_b-uplink">
+			<a href="#top">Вверх &uarr;</a>
+		</span>
+	</div>
+</div>
+</form>
+{% endif %}
+
+</div>
+{% endblock %}
