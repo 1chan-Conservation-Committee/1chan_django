@@ -8,9 +8,10 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import IntegrityError
 from django.db.models import Q
 from django.utils.http import urlencode
+from django.utils import timezone
 from django.contrib import messages
-from .models import Post, Category
-from .forms import NewPostForm
+from .models import Post, Category, Comment
+from .forms import NewPostForm, NewCommentForm
 
 
 class PostsListView(View):
@@ -44,7 +45,7 @@ def index(request):
 
 def show_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'onechan/post.html', {'post': post})
+    return render(request, 'onechan/post.html', {'post': post, 'comment_form': NewCommentForm()})
 
 
 def add_post(request):
@@ -64,3 +65,20 @@ def add_post(request):
             return render(request, 'onechan/add_post.html', status=400, context={
                 'form': form
                 })
+
+def add_comment(request, post_id):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, pk=post_id)
+        if post.closed:
+            return HttpResponseForbidden()
+        comment = Comment(author_ip=request.META['REMOTE_ADDR'], post=post)
+        form = NewCommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            post.bump_date = timezone.now()
+            post.save()
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+    else:
+        return HttpResponseNotAllowed(['POST'])

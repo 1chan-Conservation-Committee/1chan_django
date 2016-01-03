@@ -38,9 +38,8 @@
 
 {% if not post.closed %}
 <!FIXME: implement comment posting >
-<form action="comment_url" method="post" id="comment_form">
-<input type="text" name="email" value="" class="g-hidden" />
-<input type="hidden" name="post_id" value="{{ post.id }}" />
+<form action="{% url 'onechan:add_comment' post_id=post.id %}" method="post" id="comment_form">
+{% csrf_token %}
 <input type="hidden" name="homeboard" value="" />
 <div class="b-comment-form">
 	<strong>Комментировать:</strong>
@@ -51,7 +50,7 @@
 
 	<div>
 		<div class="b-comment-form_b-captcha">
-			<!FIXME: implement captcha >
+			{{ comment_form.captcha }}
 		</div>
 
 		<textarea id="comment_form_text" name="text" rows="5"></textarea>
@@ -62,7 +61,7 @@
 		IT
 		>
 		<span class="b-homeboard-form">
-			<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" /> 
+			<!--<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/anonymous.png" class="b-homeboard-form_icon js-homeboard-icon" />
 			<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
 			<div class="b-homeboard-form_select js-homeboard-select g-hidden">
 			<?php foreach(HomeBoardHelper::getBoards() as $board => $data): ?>
@@ -71,7 +70,7 @@
 				</a>
 			<?php endforeach; ?>
 
-			</div>
+			</div>-->
 		</span>
 
 		<span class="b-comment-form_b-uplink">
