@@ -1,4 +1,5 @@
 import django.forms as forms
+from captcha.fields import ReCaptchaField
 from .models import Post, Category
 
 def make_category_choices():
@@ -7,6 +8,7 @@ def make_category_choices():
 
 class NewPostForm(forms.ModelForm):
     category = forms.ChoiceField(choices=make_category_choices, required=False)
+    captcha = ReCaptchaField()
 
     class Meta:
         model = Post

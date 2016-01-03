@@ -51,7 +51,8 @@
 			</div>
 			<div class="b-blog-form_b-form_b-field">
 				<h2>Обратный тест тьюринга:</h2>
-
+				{{ form.captcha.errors }}
+				{{ form.captcha }}
 				<p>
 					<!FIXME: hardcoded url >
 					Будьте добры, соблюдайте <a href="/help/news/" target="_blank">простые правила</a> при написании сообщений.
