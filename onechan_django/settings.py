@@ -134,6 +134,16 @@ RECAPTCHA_PRIVATE_KEY = None
 NOCAPTCHA = True
 
 
+# A list of patterns which will be matched against image sources.
+# If none of them match, the image will be converted into a hyperlink.
+ALLOWED_IMAGE_PATTERNS = [
+    # accepts any image
+    r'',
+    # an example for imgur
+    #r'https?://[^/]*imgur\.com/',
+]
+
+
 try:
     from settings_local import *
 except ImportError:
