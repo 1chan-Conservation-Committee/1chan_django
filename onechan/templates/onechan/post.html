@@ -1,5 +1,6 @@
 {% extends 'onechan/base.html' %}
 {% load staticfiles %}
+{% load markdown %}
 {% block content %}
 
 {% include 'onechan/posts_list_header.html' %}
@@ -23,7 +24,7 @@
 		{% endif %}
 	</div>
 	<div class="b-comment_b-body g-clearfix">
-		{{ comment.text }}
+		{{ comment.text| markdown }}
 	</div>
 </div>
 {% endfor %}

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load markdown %}
 {% url 'onechan:show_post' post_id=post.id as post_url %}
 <div class="b-blog-entry{% if post.hidden %} m-hidden{% endif %}" id="post_{{ post.id }}">
 	<div class="b-blog-entry_b-header">
@@ -21,9 +22,9 @@
 
 	</div>
 	<div class="b-blog-entry_b-body g-clearfix">
-			{{ post.text }}
+			{{ post.text| markdown }}
 		{% if full_text %}
-			{{ post.text_full }}
+			{{ post.text_full| markdown }}
 		{% elif post.text_full %}
 			<p><a href="{{ post_url }}">Читать дальше</a></p>
 		{% endif %}
