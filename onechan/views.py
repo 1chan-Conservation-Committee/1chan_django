@@ -75,7 +75,8 @@ def add_comment(request, post_id):
         form = NewCommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-            post.bump_date = timezone.now()
+            if post.bumpable:
+                post.bump_date = timezone.now()
             post.save()
             return JsonResponse({'success': True})
         else:
