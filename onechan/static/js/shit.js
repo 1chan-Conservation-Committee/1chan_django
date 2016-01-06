@@ -6,12 +6,16 @@
 			url: e.target.action,
 			data: $(e.target).serializeArray(),
 			complete: function(xhr, status) {
-				console.log(status);
 				var resp = JSON.parse(xhr.responseText);
+				console.log(resp);
+				$('#comment_form_error_captcha').text('');
+				$('#comment_form_error_text').text('');
 				if (resp.success) {
-
+					$('#comment_form_text').val('');
 				} else {
-					alert(resp.errors);
+					$.each(resp.errors, function(key, val){
+						$('#comment_form_error_'+key).text(val);
+					});
 				};
 				window.grecaptcha.reset();
 			},

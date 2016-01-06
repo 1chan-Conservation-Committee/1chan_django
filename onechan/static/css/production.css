@@ -2201,3 +2201,12 @@ html[xmlns] .g-clearfix {
 	height: 20px;
 	padding: 2px;
 }
+
+
+.comment-form-error {
+	padding: 0 10px;
+	background: #FFB975;
+	border-radius: 8px;
+	line-height: 2em;
+	color: #fff;
+}

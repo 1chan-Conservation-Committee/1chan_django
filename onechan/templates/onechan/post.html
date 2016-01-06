@@ -50,10 +50,11 @@
 	</span>
 
 	<div>
+		<div class="comment-form-error" id="comment_form_error_captcha"></div>
 		<div class="b-comment-form_b-captcha">
 			{{ comment_form.captcha }}
 		</div>
-
+		<div class="comment-form-error" id="comment_form_error_text"></div>
 		<textarea id="comment_form_text" name="text" rows="5"></textarea>
 		<input type="submit" value="Отправить" />
 
