@@ -10,10 +10,13 @@ from django.db.models import Q
 from django.utils.http import urlencode
 from django.utils import timezone
 from django.contrib import messages
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.utils.decorators import method_decorator
 from .models import Post, Category, Comment
 from .forms import NewPostForm, NewCommentForm
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class PostsListView(View):
     filters = {
         'approved': Q(status=Post.APPROVED),
@@ -83,3 +86,14 @@ def add_comment(request, post_id):
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
     else:
         return HttpResponseNotAllowed(['POST'])
+
+def rate_post(request, post_id):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    post = get_object_or_404(Post, pk=post_id)
+    ip = request.META['REMOTE_ADDR']
+    value = 1 if int(request.POST.get('value', -1)) == 1 else -1
+    if post.rate(ip, value):
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'success': False, 'error': 'had_voted'}, status=403)

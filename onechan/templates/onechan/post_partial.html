@@ -46,16 +46,12 @@
 			<a href="javascript:;" class="js-hide-link g-hidden"><img src="{% static 'ico/oh-my-eyes.png' %}" width="16" height="16" alt="{{ post.id }}" /></a>
 			<span>|</span>
 		{% if post.rateable %}
-			<!FIXME: plus url >
-			<a href="/news/res/{{ post.id }}/rate_post/up/" class="js-rate-up-button">
-				<img src="{% static 'ico/plus_grey.gif' %}" width="9" height="11" alt="" />
-			</a>		
-			<strong class="g-{% if post.rating > 0 %}green{% else %}red{% endif %} js-rate">{{ post.rating }}</strong>
-			<!FIXME: minus url >
-			<a href="/news/res/{{ post.id }}/rate_post/down/" class="js-rate-down-button">
-				<img src="{% static 'ico/minus_grey.gif' %}" width="9" height="11" alt="" />
-			</a>
-			<span>|</span>
+			<span class="post-rate-buttons" data-rate-url="{% url 'onechan:rate_post' post_id=post.id %}" >
+				<img src="{% static 'ico/plus_grey.gif' %}" width="9" height="11" alt="" data-rate-value="1" />
+				<strong class="g-{% if post.rating > 0 %}green{% else %}red{% endif %} js-rate">{{ post.rating }}</strong>
+				<img src="{% static 'ico/minus_grey.gif' %}" width="9" height="11" alt="" data-rate-value="-1" />
+				<span>|</span>
+			</span>
 		{% endif %}
 
 			<span>{{ post.pub_date | date:'d M Y @ H:i' }}</span>

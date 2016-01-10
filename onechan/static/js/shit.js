@@ -1,5 +1,25 @@
 'use strict';
 (function(){
+	// taken from Django docs
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie != '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = $.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	}
+
+	var csrftoken = getCookie('csrftoken');
+	$.ajaxSettings.headers = {'X-CSRFToken': csrftoken};
+
 	$('#comment_form').submit(function(e){
 		$.ajax({
 			type: 'post',
@@ -23,4 +43,19 @@
 		});
 		e.preventDefault();
 	});
+
+	$('.post-rate-buttons').click(function(e){
+		var value = parseInt(e.target.dataset.rateValue);
+		var url = e.currentTarget.dataset.rateUrl;
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: {'value': value},
+			complete: function(xhr, status) {
+				console.log(status);
+			}
+		});
+		e.preventDefault();
+	});
+
 })();

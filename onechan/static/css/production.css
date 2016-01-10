@@ -2210,3 +2210,7 @@ html[xmlns] .g-clearfix {
 	line-height: 2em;
 	color: #fff;
 }
+
+.post-rate-buttons img {
+	cursor: pointer;
+}

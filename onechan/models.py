@@ -11,6 +11,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Post(models.Model):
     title = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True)
@@ -43,6 +44,16 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def rate(self, rater_ip, value):
+        if not self.rateable or Rater.objects.filter(ip=rater_ip, post=self).exists():
+            return False
+        else:
+            Rater.objects.create(ip=rater_ip, post=self)
+            self.rating = models.F('rating') + value
+            self.save()
+            self.refresh_from_db()
+            return True
+
 
 class Comment(models.Model):
     author_ip = models.GenericIPAddressField()
@@ -53,6 +64,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text if len(self.text) < 100 else self.text[:100] + '…'
+
 
 class Rater(models.Model):
     ip = models.GenericIPAddressField()
