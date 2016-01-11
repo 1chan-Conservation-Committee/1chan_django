@@ -20,6 +20,16 @@
 	var csrftoken = getCookie('csrftoken');
 	$.ajaxSettings.headers = {'X-CSRFToken': csrftoken};
 
+	var secure = (window.location.protocol.search(/https/) != -1) ? 's' : '';
+	var ws = new WebSocket("ws" + secure + "://" + window.location.host + "/ws");
+	ws.onopen = function(e) {
+		console.log(e);
+		ws.send('{"kek":3}');
+	};
+	ws.onmessage = function(e) {
+		console.log(e);
+	};
+
 	$('#comment_form').submit(function(e){
 		$.ajax({
 			type: 'post',
