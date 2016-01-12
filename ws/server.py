@@ -5,10 +5,23 @@ import json
 from aiohttp import web
 
 
+DEFAULT_ROOM_NAME = 'default'
+
+
 class Room(object):
+    _rooms = {}
+
+    @classmethod
+    def get_room(cls, name):
+        if name not in cls._rooms:
+            cls._rooms[name] = Room(name)
+            logging.getLogger('ws').debug('created a room named %s', name)
+        return cls._rooms[name]
+
     def __init__(self, name):
         self.name = name
         self._clients = set()
+        self._rooms[self.name] = self
 
     def add_client(self, client):
         self._clients.add(client)
@@ -25,6 +38,9 @@ class Room(object):
             'type': 'count',
             'data': {'count': len(self._clients)}
         })
+        if not self._clients:
+            del self._rooms[self.name]
+            logging.getLogger('ws').debug('deleted a room named %s', self.name)
 
     def broadcast(self, message):
         for cl in self._clients:
@@ -55,8 +71,6 @@ class Client(object):
         del self._rooms
 
 
-DEFAULT_ROOM = Room('default')
-
 @asyncio.coroutine
 def ws_handler(request):
     ws = web.WebSocketResponse()
@@ -72,7 +86,7 @@ def ws_handler(request):
     asyncio.async(ping())
 
     cl = Client(ws, request.headers['X-Real-IP'])
-    cl.join_room(DEFAULT_ROOM)
+    cl.join_room(Room.get_room(DEFAULT_ROOM_NAME))
     try:
         while True:
             msg = yield from ws.receive()
@@ -93,7 +107,7 @@ def ws_handler(request):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")#datefmt='%Y-%m-%d %H:%M:%S')
+    logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
     logging.getLogger('ws').setLevel(logging.DEBUG)
     app = web.Application()
     app.router.add_route('GET', '/ws', ws_handler)
