@@ -497,7 +497,6 @@ html[xmlns] .g-clearfix {
 	}
 
 	.b-header-block .b-header-block_b-stats {
-		display: none;
 		position: absolute;
 		bottom: 30px; left: 395px;
 		width: 285px;
@@ -2213,4 +2212,14 @@ html[xmlns] .g-clearfix {
 
 .post-rate-buttons img {
 	cursor: pointer;
+}
+
+#stats_block {
+	transition: opacity 0.5s;
+	opacity: 0;
+}
+
+.b-header-block:hover #stats_block {
+	display: block;
+	opacity: 1;
 }

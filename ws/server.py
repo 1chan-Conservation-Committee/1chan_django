@@ -11,11 +11,20 @@ class Room(object):
         self._clients = set()
 
     def add_client(self, client):
-        self._clients.insert(client)
+        self._clients.add(client)
+        self.broadcast({
+            'room': self.name,
+            'type': 'count',
+            'data': {'count': len(self._clients)}
+        })
 
     def remove_client(self, client):
         self._clients.remove(client)
-        # TODO: self.broadcast(disconnection msg)
+        self.broadcast({
+            'room': self.name,
+            'type': 'count',
+            'data': {'count': len(self._clients)}
+        })
 
     def broadcast(self, message):
         for cl in self._clients:
@@ -41,10 +50,12 @@ class Client(object):
         self._rooms[room.name] = room
 
     def shutdown(self):
-        for room in self._rooms.items():
+        for room in self._rooms.values():
             room.remove_client(self)
         del self._rooms
 
+
+DEFAULT_ROOM = Room('default')
 
 @asyncio.coroutine
 def ws_handler(request):
@@ -61,6 +72,7 @@ def ws_handler(request):
     asyncio.async(ping())
 
     cl = Client(ws, request.headers['X-Real-IP'])
+    cl.join_room(DEFAULT_ROOM)
     try:
         while True:
             msg = yield from ws.receive()
@@ -81,7 +93,7 @@ def ws_handler(request):
 
 
 if __name__ == '__main__':
-    logging.basicConfig()
+    logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")#datefmt='%Y-%m-%d %H:%M:%S')
     logging.getLogger('ws').setLevel(logging.DEBUG)
     app = web.Application()
     app.router.add_route('GET', '/ws', ws_handler)

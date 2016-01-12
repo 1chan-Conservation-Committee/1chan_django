@@ -24,10 +24,18 @@
 	var ws = new WebSocket("ws" + secure + "://" + window.location.host + "/ws");
 	ws.onopen = function(e) {
 		console.log(e);
-		ws.send('{"kek":3}');
 	};
 	ws.onmessage = function(e) {
 		console.log(e);
+		var msg = JSON.parse(e.data);
+		switch (msg.type) {
+			case "count": {
+				if (msg.room == 'default') {
+					$('#stats_online').text(msg.data.count);
+				};
+				break;
+			}
+		};
 	};
 
 	$('#comment_form').submit(function(e){
