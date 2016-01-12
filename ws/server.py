@@ -2,7 +2,9 @@
 import asyncio
 import logging
 import json
+import asyncio_redis
 from aiohttp import web
+from django.conf import settings
 
 
 DEFAULT_ROOM_NAME = 'default'
@@ -17,6 +19,12 @@ class Room(object):
             cls._rooms[name] = Room(name)
             logging.getLogger('ws').debug('created a room named %s', name)
         return cls._rooms[name]
+
+    @classmethod
+    def broadcast_to_room(cls, name, msg):
+        room = cls._rooms.get(name)
+        if room:
+            room.broadcast(msg)
 
     def __init__(self, name):
         self.name = name
@@ -106,15 +114,38 @@ def ws_handler(request):
         return ws
 
 
+@asyncio.coroutine
+def redis_listener():
+    conn = yield from asyncio_redis.Connection.create(**settings.WS_REDIS_CONN_SETTINGS)
+    subscriber = yield from conn.start_subscribe()
+    yield from subscriber.subscribe([settings.WS_REDIS_CHANNEL])
+    logging.getLogger('redis').debug('listening for notifications')
+    while True:
+        reply = yield from subscriber.next_published()
+        msg = json.loads(reply.value)
+        logging.getLogger('redis').debug('got a message from redis: %r', reply.value)
+        if msg['type'] == 'new_post':
+            room = DEFAULT_ROOM_NAME
+            msg['room'] = DEFAULT_ROOM_NAME
+        elif False:
+            pass
+            # ...
+        Room.broadcast_to_room(room, msg)
+
+
 if __name__ == '__main__':
     logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
-    logging.getLogger('ws').setLevel(logging.DEBUG)
+    if settings.DEBUG:
+        logging.getLogger('ws').setLevel(logging.DEBUG)
+        logging.getLogger('redis').setLevel(logging.DEBUG)
     app = web.Application()
     app.router.add_route('GET', '/ws', ws_handler)
     loop = asyncio.get_event_loop()
     handler = app.make_handler()
-    f = loop.create_server(handler, '0.0.0.0', 3000)
+    f = loop.create_server(handler, *settings.WS_LISTEN_ADDRESS)
     srv = loop.run_until_complete(f)
+    asyncio.async(redis_listener())
+    logging.getLogger('ws').info('server started')
     try:
         loop.run_forever()
     except KeyboardInterrupt:

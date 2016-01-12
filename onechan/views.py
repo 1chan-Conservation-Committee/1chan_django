@@ -14,6 +14,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from .models import Post, Category, Comment
 from .forms import NewPostForm, NewCommentForm
+from .utils import notify
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -63,7 +64,15 @@ def add_post(request):
             if cat_key:
                 post.category = Category.objects.get(key=cat_key)
             post.save()
-            return redirect(reverse('onechan:show_post', kwargs={'post_id': post.id}))
+            post_url = reverse('onechan:show_post', kwargs={'post_id': post.id})
+            notify({
+                'type': 'new_post',
+                'data': {
+                    'title': post.title,
+                    'url' : post_url
+                }
+            })
+            return redirect(post_url)
         else:
             return render(request, 'onechan/add_post.html', status=400, context={
                 'form': form

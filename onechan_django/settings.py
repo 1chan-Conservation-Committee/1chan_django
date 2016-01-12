@@ -164,6 +164,20 @@ ALLOWED_IMAGE_PATTERNS = [
 ]
 
 
+# websocket server settings
+
+# see https://asyncio-redis.readthedocs.org/en/latest/pages/reference.html#asyncio_redis.Connection.create
+WS_REDIS_CONN_SETTINGS = {
+    'host': 'localhost',
+}
+
+# http server bind address
+WS_LISTEN_ADDRESS = ('0.0.0.0', 3000)
+
+# the channel which is used for communication
+WS_REDIS_CHANNEL = 'ws_notifications'
+
+
 try:
     from settings_local import *
 except ImportError:
