@@ -60,3 +60,4 @@ target/
 venv
 settings_local.py
 nohup.out
+media

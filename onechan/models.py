@@ -72,3 +72,8 @@ class Rater(models.Model):
 
     class Meta:
         unique_together = ('ip', 'post')
+
+
+class Smiley(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+    img = models.FileField('smileys/')
