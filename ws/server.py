@@ -29,6 +29,7 @@ class Room(object):
     def __init__(self, name):
         self.name = name
         self._clients = set()
+        self._writers = set()
         self._rooms[self.name] = self
 
     def add_client(self, client):
@@ -37,6 +38,11 @@ class Room(object):
             'room': self.name,
             'type': 'count',
             'data': {'count': len(self._clients)}
+        })
+        client.send({
+            'room': self.name,
+            'type': 'writer_count',
+            'data': {'count': len(self._writers)}
         })
 
     def remove_client(self, client):
@@ -49,6 +55,19 @@ class Room(object):
         if not self._clients:
             del self._rooms[self.name]
             logging.getLogger('ws').debug('deleted a room named %s', self.name)
+
+    def set_writing(self, client, state):
+        if client not in self._clients:
+            return
+        if state:
+            self._writers.add(client)
+        else:
+            self._writers.remove(client)
+        self.broadcast({
+            'room': self.name,
+            'type': 'writer_count',
+            'data': {'count': len(self._writers)}
+        })
 
     def broadcast(self, message):
         for cl in self._clients:
@@ -69,6 +88,8 @@ class Client(object):
         logging.getLogger('ws').debug('ws message %s from %s', data, self._ip)
         if data['type'] == 'join' and 'room' in data:
             self.join_room(Room.get_room(data['room']))
+        elif data['type'] == 'writing' and data.get('room', DEFAULT_ROOM_NAME) != DEFAULT_ROOM_NAME:
+            Room.get_room(data['room']).set_writing(self, data['data']['state'])
 
     def join_room(self, room):
         room.add_client(self)

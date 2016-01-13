@@ -46,9 +46,28 @@
 			case "new_comment": {
 				var node = $(msg.data.html);
 				$('.b-post-statistics').before(node);
+				break;
+			}
+			case "writer_count": {
+				$('#post_stats_writing').text(msg.data.count);
+				break;
 			}
 		};
 	};
+
+	var sendWritingState = function(state) {
+		return function(e) {
+			ws.send(JSON.stringify({
+				type: 'writing',
+				room: window.wsRoom,
+				data: {state: state}
+			}));
+		};
+	}
+	$('#comment_form_text').on({
+		focus: sendWritingState(true),
+		blur: sendWritingState(false)
+	})
 
 	$('#comment_form').submit(function(e){
 		$.ajax({
