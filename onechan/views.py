@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import IntegrityError
 from django.db.models import Q
+from django.template.loader import render_to_string
 from django.utils.http import urlencode
 from django.utils import timezone
 from django.contrib import messages
@@ -90,6 +91,19 @@ def add_comment(request, post_id):
             if post.bumpable:
                 post.bump_date = timezone.now()
             post.save()
+            notify({
+                'type': 'new_comment',
+                'room': 'news_' + post_id,
+                'data': {
+                    'id': comment.id,
+                    'post_id': post_id,
+                    'html': render_to_string(
+                        'onechan/comment_partial.html',
+                        context={'comment': comment},
+                        request=request
+                    )
+                }
+            })
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)

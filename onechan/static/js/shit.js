@@ -43,6 +43,10 @@
 				}
 				break;
 			}
+			case "new_comment": {
+				var node = $(msg.data.html);
+				$('.b-post-statistics').before(node);
+			}
 		};
 	};
 
