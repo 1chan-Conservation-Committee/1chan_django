@@ -3,12 +3,12 @@ from django import template
 from django.template.defaultfilters import stringfilter
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.core.cache import cache
 from markdown import Markdown
 from markdown.extensions import Extension
 from markdown.treeprocessors import Treeprocessor
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
-from onechan.models import Smiley
 
 register = template.Library()
 
@@ -54,7 +54,7 @@ class Smileys(Extension):
 
         def handleMatch(self, m):
             smiley_name = m.group('smiley')
-            smileys = { s.name: s.img.url for s in Smiley.objects.all() }
+            smileys = cache.get('smiley_list')
             if smiley_name in smileys:
                 el = etree.Element('img', src=smileys[smiley_name])
                 el.set('class', 'smiley')
