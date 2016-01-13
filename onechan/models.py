@@ -77,3 +77,6 @@ class Rater(models.Model):
 class Smiley(models.Model):
     name = models.CharField(max_length=32, unique=True)
     img = models.FileField('smileys/')
+
+    def __str__(self):
+        return self.name

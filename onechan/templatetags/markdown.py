@@ -6,7 +6,9 @@ from django.utils.safestring import mark_safe
 from markdown import Markdown
 from markdown.extensions import Extension
 from markdown.treeprocessors import Treeprocessor
-
+from markdown.inlinepatterns import Pattern
+from markdown.util import etree
+from onechan.models import Smiley
 
 register = template.Library()
 
@@ -44,7 +46,31 @@ class RestrictImageHosts(Extension):
         md.treeprocessors.add('imagefilter', self.ImageHostFilter(md, self.patterns), '_end')
 
 
-md = Markdown(extensions=[EscapeHtml(), RestrictImageHosts(settings.ALLOWED_IMAGE_PATTERNS)])
+class Smileys(Extension):
+
+    class SmileysPattern(Pattern):
+        def __init__(self):
+            Pattern.__init__(self, r'(\:)(?P<smiley>.+?)\2')
+
+        def handleMatch(self, m):
+            smiley_name = m.group('smiley')
+            smileys = { s.name: s.img.url for s in Smiley.objects.all() }
+            if smiley_name in smileys:
+                el = etree.Element('img', src=smileys[smiley_name])
+                el.set('class', 'smiley')
+                return el
+            else:
+                return ':{}:'.format(smiley_name)
+
+    def extendMarkdown(self, md, md_globals):
+        md.inlinePatterns.add('smileys', self.SmileysPattern(), '_end')
+
+
+md = Markdown(extensions=[
+    EscapeHtml(),
+    RestrictImageHosts(settings.ALLOWED_IMAGE_PATTERNS),
+    Smileys(),
+])
 
 @register.filter
 @stringfilter

@@ -2223,3 +2223,8 @@ html[xmlns] .g-clearfix {
 	display: block;
 	opacity: 1;
 }
+
+.smiley {
+	max-width: 40px;
+	max-height: 40px;
+}
