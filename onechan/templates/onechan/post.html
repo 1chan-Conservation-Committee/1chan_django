@@ -1,6 +1,12 @@
 {% extends 'onechan/base.html' %}
 {% load staticfiles %}
 {% load markdown %}
+{% block ws_room %}
+<script type="text/javascript">
+"use strict";
+window.wsRoom = 'news_{{ post.id }}';
+</script>
+{% endblock %}
 {% block content %}
 
 {% include 'onechan/posts_list_header.html' %}
@@ -31,14 +37,13 @@
 
 <!FIXME: implement statistics >
 <div class="b-post-statistics">
-	Читают: <strong id="post_stats_reading">FIXME</strong>{% if not post.closed %} | Отвечают: <strong id="post_stats_writing">FIXME</strong>{% endif %}
+	Читают: <strong id="post_stats_reading">-</strong>{% if not post.closed %} | Отвечают: <strong id="post_stats_writing">FIXME</strong>{% endif %}
 	<span class="b-post-statistics_m-right">
 		Всего: <span id="post_stats_total">FIXME: views count</span>
 	</span>
 </div>
 
 {% if not post.closed %}
-<!FIXME: implement comment posting >
 <form action="{% url 'onechan:add_comment' post_id=post.id %}" method="post" id="comment_form">
 {% csrf_token %}
 <input type="hidden" name="homeboard" value="" />

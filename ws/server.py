@@ -67,7 +67,8 @@ class Client(object):
     def on_message(self, msg):
         data = json.loads(msg.data)
         logging.getLogger('ws').debug('ws message %s from %s', data, self._ip)
-        # TODO: ???
+        if data['type'] == 'join' and 'room' in data:
+            self.join_room(Room.get_room(data['room']))
 
     def join_room(self, room):
         room.add_client(self)
@@ -84,7 +85,7 @@ def ws_handler(request):
     ws = web.WebSocketResponse()
     yield from ws.prepare(request)
     #params = request.GET
-    logging.getLogger('ws').info('%s connected', request.headers['X-Real-IP'])
+    logging.getLogger('ws').debug('%s connected', request.headers['X-Real-IP'])
     
     @asyncio.coroutine
     def ping():
@@ -124,17 +125,16 @@ def redis_listener():
         reply = yield from subscriber.next_published()
         msg = json.loads(reply.value)
         logging.getLogger('redis').debug('got a message from redis: %r', reply.value)
-        if msg['type'] == 'new_post':
-            room = DEFAULT_ROOM_NAME
-            msg['room'] = DEFAULT_ROOM_NAME
+        if 'new_' in msg['type']:
+            room = msg.get('room') or DEFAULT_ROOM_NAME
+            msg['room'] = room
         elif False:
-            pass
-            # ...
+            pass # ...
         Room.broadcast_to_room(room, msg)
 
 
 if __name__ == '__main__':
-    logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
+    logging.basicConfig(format="%(asctime)s:%(levelname)s:%(name)s:%(message)s")
     if settings.DEBUG:
         logging.getLogger('ws').setLevel(logging.DEBUG)
         logging.getLogger('redis').setLevel(logging.DEBUG)

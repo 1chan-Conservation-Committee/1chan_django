@@ -24,6 +24,12 @@
 	var ws = new WebSocket("ws" + secure + "://" + window.location.host + "/ws");
 	ws.onopen = function(e) {
 		console.log(e);
+		if (window.wsRoom) {
+			ws.send(JSON.stringify({
+				type: 'join',
+				room: window.wsRoom
+			}));
+		};
 	};
 	ws.onmessage = function(e) {
 		console.log(e);
@@ -32,7 +38,9 @@
 			case "count": {
 				if (msg.room == 'default') {
 					$('#stats_online').text(msg.data.count);
-				};
+				} else {
+					$('#post_stats_reading').text(msg.data.count);
+				}
 				break;
 			}
 		};

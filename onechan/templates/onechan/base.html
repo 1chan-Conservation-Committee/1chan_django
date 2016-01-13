@@ -7,6 +7,7 @@
 	<link rel="icon"       type="image/x-icon" href="{% static 'ico/favicon.ico' %}" />
 	<link rel="stylesheet" type="text/css"     href="{% static 'css/production.css' %}"  media="all" />
 	<script src="{% static 'js/zepto.min.js' %}"></script>
+	{% block ws_room %}{% endblock %}
 </head>
 <body>
 <div class="l-wrap">
@@ -23,7 +24,7 @@
 		</div>
 		<div class="b-header-block_b-stats" id="stats_block">
 			<p>
-				Вижу <strong id="stats_online">0</strong>! Всего сегодня было <strong id="stats_hosts">FIXME: daily users</strong>.<br />
+				Вижу <strong id="stats_online">-</strong>! Всего сегодня было <strong id="stats_hosts">FIXME: daily users</strong>.<br />
 				За день постов — <strong id="stats_posts">FIXME: daily posts</strong>, скорость ~<strong id="stats_speed">FIXME: speed</strong> п/ч.
 				<span class="g-hidden" id="stats_unique_posters">FIXME: unique posters (?)</span>
 			</p>
