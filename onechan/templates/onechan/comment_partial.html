@@ -1,0 +1,20 @@
+{% load staticfiles %}
+{% load markdown %}
+<div class="b-comment{% if False %} m-new{% endif %}" id="comment_{{ comment.id }}">
+	<div class="b-comment_b-info">
+		<!FIXME: js links>
+		{{ comment.pub_date| date:'d M Y @ H:i' }}, <a href="#{{ comment.id }}">№</a><a href="javascript://" class="js-paste-link" name="{{ comment.id }}">{{ comment.id }}</a>
+		<a href="#" class="js-remove-button g-hidden">
+			<img src="{% static 'ico/remove.gif' %}" width="16" height="16" alt="{{ comment.id }}" />
+		</a>
+		{% if comment.author_board %}
+		<!FIXME: handle this icon shit somehow >
+		<a href="" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «»">
+			<img src="{% static 'ico/homeboards/anonymous.png' %}" width="16" height="16" alt="" />
+		</a>
+		{% endif %}
+	</div>
+	<div class="b-comment_b-body g-clearfix">
+		{{ comment.text| markdown }}
+	</div>
+</div>
