@@ -10,6 +10,7 @@ from markdown.treeprocessors import Treeprocessor
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
 
+
 register = template.Library()
 
 
@@ -30,7 +31,8 @@ class RestrictImageHosts(Extension):
         def run(self, root):
             for image in root.findall('.//img'):
                 link = image.get('src')
-                if not any((pattern.match(link) for pattern in self.patterns)):
+                if not any((pattern.match(link) for pattern in self.patterns)) and\
+                        'smiley' not in image.get('class'):
                     image.tag = 'a'
                     image.attrib.pop('src')
                     image.attrib.pop('alt')
@@ -50,17 +52,17 @@ class Smileys(Extension):
 
     class SmileysPattern(Pattern):
         def __init__(self):
-            Pattern.__init__(self, r'(\:)(?P<smiley>.+?)\2')
+            Pattern.__init__(self, '')
+
+        def getCompiledRegExp(self):
+            self.smileys = cache.get('smiley_list')
+            return re.compile(r'^(.*?):(?P<smiley>' + '|'.join(self.smileys.keys()) + '):(.*?)$')
 
         def handleMatch(self, m):
             smiley_name = m.group('smiley')
-            smileys = cache.get('smiley_list')
-            if smiley_name in smileys:
-                el = etree.Element('img', src=smileys[smiley_name])
-                el.set('class', 'smiley')
-                return el
-            else:
-                return ':{}:'.format(smiley_name)
+            el = etree.Element('img', src=self.smileys[smiley_name])
+            el.set('class', 'smiley')
+            return el
 
     def extendMarkdown(self, md, md_globals):
         md.inlinePatterns.add('smileys', self.SmileysPattern(), '_end')
