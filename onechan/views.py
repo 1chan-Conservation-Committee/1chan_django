@@ -15,7 +15,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from .models import Post, Category, Comment
 from .forms import NewPostForm, NewCommentForm
-from .utils import notify
+from .utils import notify, incr_today_posts
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
@@ -73,6 +73,7 @@ def add_post(request):
                     'url' : post_url
                 }
             })
+            incr_today_posts()
             return redirect(post_url)
         else:
             return render(request, 'onechan/add_post.html', status=400, context={
@@ -104,6 +105,7 @@ def add_comment(request, post_id):
                     )
                 }
             })
+            incr_today_posts()
             return JsonResponse({'success': True})
         else:
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
