@@ -117,6 +117,13 @@ def rate_post(request, post_id):
     ip = request.META['REMOTE_ADDR']
     value = 1 if int(request.POST.get('value', -1)) == 1 else -1
     if post.rate(ip, value):
+        notify({
+            'type': 'new_rating',
+            'data': {
+                'post_id': post_id,
+                'rating': post.rating
+            }
+        })
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'had_voted'}, status=403)

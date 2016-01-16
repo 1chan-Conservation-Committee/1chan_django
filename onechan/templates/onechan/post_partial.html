@@ -48,7 +48,7 @@
 		{% if post.rateable %}
 			<span class="post-rate-buttons" data-rate-url="{% url 'onechan:rate_post' post_id=post.id %}" >
 				<img src="{% static 'ico/plus_grey.gif' %}" width="9" height="11" alt="" data-rate-value="1" />
-				<strong class="g-{% if post.rating > 0 %}green{% else %}red{% endif %} js-rate">{{ post.rating }}</strong>
+				<strong id="post_rating_{{ post.id }}" class="g-{% if post.rating >= 0 %}green{% else %}red{% endif %} js-rate">{{ post.rating }}</strong>
 				<img src="{% static 'ico/minus_grey.gif' %}" width="9" height="11" alt="" data-rate-value="-1" />
 				<span>|</span>
 			</span>

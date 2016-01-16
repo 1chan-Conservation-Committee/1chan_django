@@ -52,6 +52,13 @@
 				$('#post_stats_writing').text(msg.data.count);
 				break;
 			}
+			case "new_rating": {
+				var elemColl = $('#post_rating_' + msg.data['post_id'].toString());
+				elemColl.removeClass('g-green g-red');
+				elemColl.addClass(msg.data.rating >= 0 ? 'g-green' : 'g-red');
+				elemColl.text(msg.data.rating);
+				break;
+			}
 		};
 	};
 
