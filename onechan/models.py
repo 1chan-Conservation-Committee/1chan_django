@@ -19,7 +19,7 @@ class Post(models.Model):
     text = models.TextField()
     text_full = models.TextField(blank=True)
     author_ip = models.GenericIPAddressField()
-    author_board = models.CharField(max_length=32, blank=True)
+    author_board = models.ForeignKey('Homeboard', null=True, blank=True, on_delete=models.SET_NULL)
     pub_date = models.DateTimeField(default=timezone.now)
     bump_date = models.DateTimeField(default=timezone.now)
     rating = models.SmallIntegerField(default=0)
@@ -65,7 +65,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     author_ip = models.GenericIPAddressField()
-    author_board = models.CharField(max_length=32, blank=True)
+    author_board = models.ForeignKey('Homeboard', null=True, blank=True, on_delete=models.SET_NULL)
     pub_date = models.DateTimeField(default=timezone.now)
     text = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -85,6 +85,14 @@ class Rater(models.Model):
 class Smiley(models.Model):
     name = models.CharField(max_length=32, unique=True)
     img = models.FileField('smileys/')
+
+    def __str__(self):
+        return self.name
+
+
+class Homeboard(models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    img = models.FileField('homeboards/')
 
     def __str__(self):
         return self.name
