@@ -66,6 +66,7 @@ class Smileys(Extension):
 
     def extendMarkdown(self, md, md_globals):
         md.inlinePatterns.add('smileys', self.SmileysPattern(), '_end')
+        md.ESCAPED_CHARS.append(':')
 
 
 md = Markdown(extensions=[
