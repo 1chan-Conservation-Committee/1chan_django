@@ -51,6 +51,7 @@ def index(request):
 
 def show_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
+    post.add_viewer(request.META['REMOTE_ADDR'])
     return render(request, 'onechan/post.html', {'post': post, 'comment_form': NewCommentForm()})
 
 

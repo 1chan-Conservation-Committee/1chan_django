@@ -25,9 +25,16 @@ def update_posting_stats():
     conn.zremrangebyscore('stats_hour_posts', 0, ts - 3600)
     conn.zadd('stats_hour_posts', ts, ts)
 
+def _get_viewer_set_name(mdl_inst):
+    return 'viewers_{0.__class__.__name__!s}_{0.pk!s}'.format(mdl_inst)
+
 def get_view_count(mdl_inst):
     conn = get_redis_connection('default')
-    return conn.scard('viewers_{0.__class__.__name__!s}_{0.pk!s}'.format(mdl_inst))
+    return conn.scard(_get_viewer_set_name(mdl_inst))
+
+def update_view_count(mdl_inst, viewer):
+    conn = get_redis_connection('default')
+    conn.sadd(_get_viewer_set_name(mdl_inst), viewer)
 
 
 class DailyUsersMiddleware(object):

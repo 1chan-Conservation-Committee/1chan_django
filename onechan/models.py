@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from .utils.stats import get_view_count, update_view_count
 
 
 class Category(models.Model):
@@ -53,6 +54,13 @@ class Post(models.Model):
             self.save()
             self.refresh_from_db()
             return True
+
+    @property
+    def view_count(self):
+        return get_view_count(self)
+
+    def add_viewer(self, ip):
+        update_view_count(self, ip)
 
 
 class Comment(models.Model):

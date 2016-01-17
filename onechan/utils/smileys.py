@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from .models import Smiley
+from ..models import Smiley
 
 
 class SmileyCacheMiddleware(object):
