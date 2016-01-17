@@ -15,7 +15,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from .models import Post, Category, Comment
 from .forms import NewPostForm, NewCommentForm
-from .utils import notify, update_posting_stats
+from .utils import notify
+from .utils.stats import update_posting_stats
 
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')

@@ -52,8 +52,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'onechan.utils.DailyUsersMiddleware',
-    'onechan.utils.SmileyCacheMiddleware',
+    'onechan.utils.stats.DailyUsersMiddleware',
+    'onechan.utils.smileys.SmileyCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'onechan_django.urls'
@@ -69,7 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'onechan.utils.stats'
+                'onechan.utils.stats.stats'
             ],
         },
     },
