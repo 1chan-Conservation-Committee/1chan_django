@@ -8,10 +8,9 @@
 			<img src="{% static 'ico/remove.gif' %}" width="16" height="16" alt="{{ comment.id }}" />
 		</a>
 		{% if comment.author_board %}
-		<!FIXME: handle this icon shit somehow >
-		<a href="" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «»">
-			<img src="{% static 'ico/homeboards/anonymous.png' %}" width="16" height="16" alt="" />
-		</a>
+			<img src="{{ comment.author_board.img.url }}" class="b-comment_b-homeboard" width="16" height="16"
+			alt="Аноним выбрал принадлежность «{{ comment.author_board.name }}»"
+			title="Аноним выбрал принадлежность «{{ comment.author_board.name }}»"/>
 		{% endif %}
 	</div>
 	<div class="b-comment_b-body g-clearfix">

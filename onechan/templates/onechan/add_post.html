@@ -73,17 +73,7 @@
 					Вы, как автор, можете указать <em>свою принадлежность к аудитории определенной имиджборды</em>.
 					Иконка выбранной имиджборды будет отображаться рядом с вашим постом.
 				</p>
-				<span class="b-homeboard-form">
-					<img src="{% static 'ico/homeboards/anonymous.png' %}" class="b-homeboard-form_icon js-homeboard-icon" /> 
-					<a href="javascript://" class="b-homeboard-form_link js-homeboard-link g-dynamic">Сменить</a>
-					<div class="b-homeboard-form_select js-homeboard-select g-hidden">
-					<?php foreach(HomeBoardHelper::getBoards() as $board => $data): ?>
-						<a href="javascript://" name="<?php echo($board); ?>" title="<?php echo($data[1]); ?>" class="js-homeboard-select-link">
-							<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/homeboards/<?php echo($data[0]); ?>" class="b-homeboard-form_icon" />
-						</a>
-					<?php endforeach; ?>
-
-					</div>
+				{{ form.author_board }}
 				</span>
 			</div>
 		</div>

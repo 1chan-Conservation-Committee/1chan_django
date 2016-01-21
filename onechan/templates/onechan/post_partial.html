@@ -59,12 +59,11 @@
 			<span>
 				<a href="{{ post_url }}" class="g-disabled">№{{post.id}}</a>
 			</span>
-			{% if post.author_board %}
 			<span>|</span>
-			<!FIXME: handle this icon shit somehow >
-			<a href="" class="b-comment_b-homeboard" title="Аноним выбрал принадлежность «»">
-				<img src="{% static 'ico/homeboards/anonymous.png' %}" width="16" height="16" alt="" />
-			</a>
+			{% if post.author_board %}
+				<img class="b-comment_b-homeboard" src="{{ post.author_board.img.url }}" width="16" height="16" alt="" />
+			{% else %}
+				<img class="b-comment_b-homeboard" src="{% static 'ico/homeboards/anonymous.png' %}" width="16" height="16" alt="" />
 			{% endif %}
 		</span>
 		<span class="b-blog-entry_b-info_b-link">

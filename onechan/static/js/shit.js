@@ -114,4 +114,26 @@
 		e.preventDefault();
 	});
 
+	$('#news_addform_category').select2({
+		allowClear: true,
+		width: "100%",
+		tags: true,
+	});
+
+
+	var formatHomeboardChoice = function(sel) {
+		if (sel.element) {
+			return $('<span><img class="select2-homeboard-icon" src="' + sel.element.dataset.boardIcon +
+				'">' + sel.text + '</span>');
+		} else {
+			return sel.text;
+		}
+	};
+
+	$('#homeboard_select').select2({
+		allowClear: true,
+		width: "100%",
+		templateResult: formatHomeboardChoice,
+	})
+
 })();
