@@ -27,8 +27,17 @@ class PostsListView(View):
         'all': Q(status=Post.ALL) | Q(status=Post.APPROVED)
     }
 
+    titles = {
+        'approved': 'Одобренные посты',
+        'hidden': 'Скрытые посты',
+        'all': 'Все посты'
+    }
+
     def get_queryset(self, request, *args, **kwargs):
         return Post.objects.select_related('category').filter(self.filters[kwargs['posts_type']])
+
+    def get_title(self, request, *args, **kwargs):
+        return self.titles[kwargs['posts_type']]
 
     def get(self, request, *args, **kwargs):
         pgtr = Paginator(self.get_queryset(request, *args, **kwargs).order_by('-pinned', '-pub_date'), 10)
@@ -42,6 +51,7 @@ class PostsListView(View):
                 '?' + urlencode({'page': pgtr.num_pages}))
         return render(request, "onechan/posts_list.html", {
             'posts': posts,
+            'title': self.get_title(request, *args, **kwargs)
         })
 
 
@@ -50,6 +60,9 @@ class FavouritesListView(PostsListView):
 
     def get_queryset(self, request, *args, **kwargs):
         return Post.objects.filter(favourite__user_ip=request.META['REMOTE_ADDR'])
+
+    def get_title(self, request, *args, **kwargs):
+        return 'Избранные посты'
 
 
 def index(request):

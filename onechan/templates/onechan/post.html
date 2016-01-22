@@ -1,5 +1,8 @@
 {% extends 'onechan/base.html' %}
 {% load staticfiles %}
+{% block title %}
+{{ post.title }} - Пост №{{post.id}}
+{% endblock %}
 {% block ws_room %}
 <script type="text/javascript">
 "use strict";
