@@ -8,7 +8,7 @@
 		</li>
 		<li class="b-blog-panel_b-favorites">
 			<img src="{% static 'ico/favorites.png' %}" width="16" height="16" alt="" />
-			<a href="/news/fav/">Избранные</a>
+			<a href="{% url 'onechan:favourite_posts' %}">Избранные</a>
 		</li>
 		<li class="b-blog-panel_b-approved{% if True %} b-blog-panel_m-active{% endif %}"><! highlighting example >
 			<img src="{% static 'ico/tick.png' %}" width="16" height="16" alt="" />

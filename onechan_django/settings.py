@@ -69,7 +69,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'onechan.utils.stats.stats'
+                'onechan.utils.stats.stats',
+                'onechan.utils.favourites.favourites'
             ],
         },
     },

@@ -36,13 +36,10 @@
 	<div class="b-blog-entry_b-info" id="post_{{ post.id }}_info">
 		<!FIXME: FUCKING HARDCODED URLS IN THE ENTIRE PANEL >
 		<span class="b-blog-entry_b-info_b-control">
-			<a href="/news/fav/toggle/{{post.id}}/" class="js-favorite-button">
-				<!FIXME: implement favourites >
-				<img src="{% if True %}{% static 'ico/favorites-false.png' %}{% else %}{% static 'ico/favourites.png' %}{% endif %}" width="16" height="16" alt="" id="post_{{ post.id }}_favorite" />
-			</a>
-			<a href="#" class="js-moderator-button g-hidden">
-				<img src="{% static 'ico/settings.png' %}" width="16" height="16" alt="{{ post.id }}" />
-			</a>
+			<span class="favourite-icon favourite-icon-{% if post in favourites %}active{% else %}disabled{% endif %}"
+				data-favourite-url="{% url 'onechan:set_favourite' post_id=post.id %}"
+				data-favourite-current-value="{% if post in favourites %}1{% else %}0{% endif %}"
+				id="post_{{ post.id }}_favorite"></span>
 			<a href="javascript:;" class="js-hide-link g-hidden"><img src="{% static 'ico/oh-my-eyes.png' %}" width="16" height="16" alt="{{ post.id }}" /></a>
 			<span>|</span>
 		{% if post.rateable %}

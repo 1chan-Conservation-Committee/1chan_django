@@ -108,7 +108,34 @@
 			url: url,
 			data: {'value': value},
 			complete: function(xhr, status) {
-				console.log(status);
+			}
+		});
+		e.preventDefault();
+	});
+
+	$('.favourite-icon').click(function(e){
+		var value = !(e.target.dataset.favouriteCurrentValue === '1');
+		var url = e.target.dataset.favouriteUrl;
+		var id = e.target.id;
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: {'value': value},
+			complete: function(xhr, status) {
+				var resp = JSON.parse(xhr.responseText);
+				console.log(id);
+				if (resp.success) {
+					var elem = $("#"+id);
+					if (value) {
+						elem.removeClass('favourite-icon-disabled');
+						elem.addClass('favourite-icon-active');
+						elem.data('favouriteCurrentValue', '1');
+					} else {
+						elem.removeClass('favourite-icon-active');
+						elem.addClass('favourite-icon-disabled');
+						elem.data('favouriteCurrentValue', '0');
+					}
+				};
 			}
 		});
 		e.preventDefault();

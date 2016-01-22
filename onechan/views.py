@@ -13,7 +13,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, Favourite
 from .forms import NewPostForm, NewCommentForm
 from .utils import notify
 from .utils.stats import update_posting_stats
@@ -27,11 +27,11 @@ class PostsListView(View):
         'all': Q(status=Post.ALL) | Q(status=Post.APPROVED)
     }
 
-    def get_queryset(self, *args, **kwargs):
+    def get_queryset(self, request, *args, **kwargs):
         return Post.objects.select_related('category').filter(self.filters[kwargs['posts_type']])
 
     def get(self, request, *args, **kwargs):
-        pgtr = Paginator(self.get_queryset(*args, **kwargs).order_by('-pinned', '-pub_date'), 10)
+        pgtr = Paginator(self.get_queryset(request, *args, **kwargs).order_by('-pinned', '-pub_date'), 10)
         page = request.GET.get("page")
         try:
             posts = pgtr.page(page)
@@ -43,6 +43,13 @@ class PostsListView(View):
         return render(request, "onechan/posts_list.html", {
             'posts': posts,
         })
+
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class FavouritesListView(PostsListView):
+
+    def get_queryset(self, request, *args, **kwargs):
+        return Post.objects.filter(favourite__user_ip=request.META['REMOTE_ADDR'])
 
 
 def index(request):
@@ -131,3 +138,16 @@ def rate_post(request, post_id):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'had_voted'}, status=403)
+
+def set_favourite(request, post_id):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    post = get_object_or_404(Post, pk=post_id)
+    ip = request.META['REMOTE_ADDR']
+    value = request.POST.get('value') in ['1', 'true']
+    post.set_favourite(ip, value)
+    return JsonResponse({
+        'success': True,
+        'favourite': value,
+        'post_id': post.id
+    })

@@ -16,7 +16,6 @@ window.wsRoom = 'news_{{ post.id }}';
 	{% include 'onechan/comment_partial.html' %}
 {% endfor %}
 
-<!FIXME: implement statistics >
 <div class="b-post-statistics">
 	Читают: <strong id="post_stats_reading">-</strong>{% if not post.closed %} | Отвечают: <strong id="post_stats_writing">-</strong>{% endif %}
 	<span class="b-post-statistics_m-right">

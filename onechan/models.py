@@ -55,6 +55,18 @@ class Post(models.Model):
             self.refresh_from_db()
             return True
 
+    def set_favourite(self, user_ip, value):
+        if value:
+            Favourite.objects.get_or_create(user_ip=user_ip, post=self)
+        else:
+            Favourite.objects.filter(user_ip=user_ip, post=self).delete()
+
+    @property
+    def favourers(self):
+        if not hasattr(self, '_favourers'):
+            self._favourers = self.objects.favourite_set.values_list('user_ip', flat=True)
+        return self._favourers
+
     @property
     def view_count(self):
         return get_view_count(self)
@@ -80,6 +92,14 @@ class Rater(models.Model):
 
     class Meta:
         unique_together = ('ip', 'post')
+
+
+class Favourite(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user_ip = models.GenericIPAddressField()
+
+    class Meta:
+        unique_together = ('user_ip', 'post')
 
 
 class Smiley(models.Model):

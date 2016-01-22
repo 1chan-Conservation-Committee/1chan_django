@@ -2183,3 +2183,20 @@ html[xmlns] .g-clearfix {
 .comment-form-author-board {
 	width: 50%;
 }
+
+.favourite-icon {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.favourite-icon-active {
+	background-image: url("/static/ico/favorites.png");
+}
+
+.favourite-icon-disabled {
+	background-image: url("/static/ico/favorites-false.png");
+}
