@@ -8,6 +8,9 @@ urlpatterns = [
     url(r"^news/all$", views.PostsListView.as_view(), {'posts_type': 'all'}, name='all_posts'),
     url(r"^news/hidden$", views.PostsListView.as_view(), {'posts_type': 'hidden'}, name='hidden_posts'),
     url(r'^news/favourites$', views.FavouritesListView.as_view(), name='favourite_posts'),
+    url(r'^news/category/(?P<category_id>\d+)$', views.CategoryListView.as_view(), name='category_posts'),
+
+    url(r'^categories$', views.category_list, name='category_list'),
 
     url(r'^news/(?P<post_id>[0-9]+)$', views.show_post, name='show_post'),
     url(r'^news/add$', views.add_post, name='add_post'),

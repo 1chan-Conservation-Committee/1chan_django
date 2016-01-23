@@ -10,8 +10,7 @@
 	{% endif %}
 
 	{% if post.category %}
-		<!FIXME: don't hardcode urls >
-		<a href="/news/cat/{{ post.category.id }}/" class="b-blog-entry_b-header_m-category">{{ post.category.name }}</a>
+		<a href="{% url 'onechan:category_posts' category_id=post.category.id %}" class="b-blog-entry_b-header_m-category">{{ post.category.name }}</a>
 		&rarr;
 	{% endif %}
 

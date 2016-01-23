@@ -21,7 +21,7 @@
 	<div class="b-blog-panel_b-searchmenu">
 		<!FIXME: don't hardcode urls >
 		<img src="{% static 'ico/search.png' %}" width="16" height="16" alt="" /> <a href="/news/search/">Поиск записей</a> |
-		<a href="/news/cat/">Категории</a> |
+		<a href="{% url 'onechan:category_list' %}">Категории</a> |
 		<a href="/news/last_comments/">Последние комментарии</a>
 	</div>
 

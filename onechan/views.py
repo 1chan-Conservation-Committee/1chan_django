@@ -28,9 +28,9 @@ class PostsListView(View):
     }
 
     titles = {
-        'approved': 'Одобренные посты',
-        'hidden': 'Скрытые посты',
-        'all': 'Все посты'
+        'approved': 'Одобренные новости',
+        'hidden': 'Скрытые новости',
+        'all': 'Все новости'
     }
 
     def get_queryset(self, request, *args, **kwargs):
@@ -64,12 +64,26 @@ class FavouritesListView(PostsListView):
         return Post.objects.filter(favourite__user_ip=request.META['REMOTE_ADDR'])
 
     def get_title(self, request, *args, **kwargs):
-        return 'Избранные посты'
+        return 'Избранные новости'
+
+
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class CategoryListView(PostsListView):
+
+    def get_queryset(self, request, *args, **kwargs):
+        self.cat = get_object_or_404(Category, pk=kwargs.get('category_id'))
+        return Post.objects.filter(category=self.cat)
+
+    def get_title(self, request, *args, **kwargs):
+        return 'Новости в категории {}'.format(self.cat.name)
 
 
 def index(request):
     return redirect(reverse('onechan:approved_posts'), permanent=True)
 
+def category_list(request):
+    return render(request, 'onechan/category_list.html',
+        {'categories': Category.objects.all()})
 
 def show_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
