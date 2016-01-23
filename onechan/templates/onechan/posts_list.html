@@ -19,4 +19,26 @@
 	<p>Либо их действительно нет, либо опять все сломалось.</p>
 </div>
 {% endfor %}
+
+{% if posts %}
+<div class="b-paginator">
+	<ul class="g-clearfix">
+		<li class="b-paginator_b-control"><a href="{{request.path}}?page={{posts.paginator.page_range|first}}">&lArr;</a></li>
+		{% if posts.has_previous %}
+		<li class="b-paginator_b-control"><a href="{{request.path}}?page={{posts.previous_page_number}}">&larr;</a></li>
+		{% endif %}
+		{% for page_num in posts.paginator.page_range %}
+			{% if page_num == posts.number %}
+			<li><span>{{page_num}}</span></li>
+			{% else %}
+			<li><a href="{{request.path}}?page={{page_num}}">{{page_num}}</a></li>
+			{% endif %}
+		{% endfor %}
+		{% if posts.has_next %}
+		<li class="b-paginator_b-control"><a href="{{request.path}}?page={{posts.next_page_number}}">&rarr;</a></li>
+		{% endif %}
+		<li class="b-paginator_b-control"><a href="{{request.path}}?page={{posts.paginator.page_range|last}}">&rArr;</a></li>
+	</ul>
+</div>
+{% endif %}
 {% endblock %}
