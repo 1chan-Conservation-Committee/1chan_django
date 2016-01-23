@@ -90,7 +90,6 @@ def show_post(request, post_id):
     post.add_viewer(request.META['REMOTE_ADDR'])
     return render(request, 'onechan/post.html', {'post': post, 'comment_form': NewCommentForm()})
 
-
 def add_post(request):
     if request.method == 'GET':
         return render(request, 'onechan/add_post.html', {'form': NewPostForm()})
@@ -117,6 +116,10 @@ def add_post(request):
             return render(request, 'onechan/add_post.html', status=400, context={
                 'form': form
                 })
+
+def last_comments(request):
+    comments = Comment.objects.select_related('post').order_by('-pk')[:20]
+    return render(request, 'onechan/last_comments.html', {'comments': comments})
 
 def add_comment(request, post_id):
     if request.method == 'POST':

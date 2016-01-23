@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^news/(?P<post_id>[0-9]+)/rate$', views.rate_post, name='rate_post'),
     url(r'^news/(?P<post_id>[0-9]+)/add_comment$', views.add_comment, name='add_comment'),
     url(r'^news/(?P<post_id>[0-9]+)/set_favourite$', views.set_favourite, name='set_favourite'),
+
+    url(r'^comments$', views.last_comments, name='last_comments'),
 ]

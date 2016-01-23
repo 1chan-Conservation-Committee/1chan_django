@@ -1,0 +1,16 @@
+{% extends 'onechan/base.html' %}
+{% load staticfiles %}
+{% block title %}
+Последние комментарии
+{% endblock %}
+{% block content %}
+{% include 'onechan/posts_list_header.html' %}
+<div class="b-static">
+	<h1>Последние комментарии</h1>
+</div>
+<div class="l-comments-wrap">
+{% for comment in comments %}
+{% include 'onechan/comment_partial.html' %}
+{% endfor %}
+</div>
+{% endblock %}
