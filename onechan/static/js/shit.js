@@ -46,6 +46,7 @@
 			case "new_comment": {
 				var node = $(msg.data.html);
 				$('.b-post-statistics').before(node);
+				$('#last_comments_new').prepend(node);
 				break;
 			}
 			case "writer_count": {

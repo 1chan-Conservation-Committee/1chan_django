@@ -1,14 +1,23 @@
 {% extends 'onechan/base.html' %}
 {% load staticfiles %}
+{% block ws_room %}
+<script type="text/javascript">
+"use strict";
+window.wsRoom = 'last_comments';
+</script>
+{% endblock %}
+
 {% block title %}
 Последние комментарии
 {% endblock %}
+
 {% block content %}
 {% include 'onechan/posts_list_header.html' %}
 <div class="b-static">
 	<h1>Последние комментарии</h1>
 </div>
 <div class="l-comments-wrap">
+<div id="last_comments_new"></div>
 {% for comment in comments %}
 {% include 'onechan/comment_partial.html' %}
 {% endfor %}
