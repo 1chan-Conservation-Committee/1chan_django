@@ -40,7 +40,9 @@ class PostsListView(View):
         return self.titles[kwargs['posts_type']]
 
     def get(self, request, *args, **kwargs):
-        pgtr = Paginator(self.get_queryset(request, *args, **kwargs).order_by('-pinned', '-pub_date'), 10)
+        sort_by_bump = request.GET.get("sort_by_bump", '') in ['1', 'true']
+        pgtr = Paginator(self.get_queryset(request, *args, **kwargs)\
+            .order_by('-pinned', '-bump_date' if sort_by_bump else '-pub_date'), 10)
         page = request.GET.get("page")
         try:
             posts = pgtr.page(page)

@@ -24,34 +24,15 @@
 		<a href="/news/cat/">Категории</a> |
 		<a href="/news/last_comments/">Последние комментарии</a>
 	</div>
-	<!FIXME: wtf is this shit >
-	<!--
-	<?php
-		switch($this -> getParameter('section')):
-	 	case ('entry'):
-	 ?>
 
-	<div class="b-blog-panel_b-submenu">
-		<img src="http://<?php echo TemplateHelper::getSiteUrl(); ?>/ico/new.png" width="16" height="16" alt="" />
-		<a href="javascript://" class="g-disabled" id="new_comments_link">К непрочитанным комментариям</a>
-	</div>
-	<?php break; ?>
-
-	<?php
-		case ('all'):
-		case ('favorite'):
-		case ('rated'):
-		case ('category'):
-		case ('hidden'):
-	 ?>
-	-->
+	{% if posts %}
 	<div class="b-blog-panel_b-submenu">
 		<img src="{% static 'ico/sort.png' %}" width="16" height="16" alt="Сортировать" />
 		<!FIXME: switch classes on sorting links depending on active mode >
 		<span>По дате:</span>
-			<span>создания</span>
+			<a href="?sort_by_bump=0">создания</a>
 		<span>|</span>
-			<!FIXME: don't fucking hardcode urls >
-			<a href="/news/sort/updated_at/" class="g-dynamic">обновления</a>
+			<a href="?sort_by_bump=1">обновления</a>
 	</div>
+	{% endif %}
 </div>
