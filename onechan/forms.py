@@ -14,8 +14,6 @@ from .models import Post, Category, Comment, Homeboard
 class CustomAttrsSelect(widgets.Select):
 
     def __init__(self, attrs=None, choices=(), ignore_field_choices=False):
-        if callable(choices):
-            choices = choices()
         self._ignore_field_choices = ignore_field_choices
         if ignore_field_choices:
             self._own_choices = choices
@@ -47,6 +45,8 @@ class CustomAttrsSelect(widgets.Select):
             choices = self._own_choices
         else:
             choices = chain(self.choices, choices)
+        if callable(choices):
+            choices = choices()
         for option in choices:
             output.append(self.render_option(selected_choices, *option))
         return '\n'.join(output)
