@@ -104,7 +104,7 @@ class Favourite(models.Model):
 
 class Smiley(models.Model):
     name = models.CharField(max_length=32, unique=True)
-    img = models.FileField('smileys/')
+    img = models.FileField(upload_to='smileys/')
 
     def __str__(self):
         return self.name
@@ -112,7 +112,7 @@ class Smiley(models.Model):
 
 class Homeboard(models.Model):
     name = models.CharField(max_length=64, unique=True)
-    img = models.FileField('homeboards/')
+    img = models.FileField(upload_to='homeboards/')
 
     def __str__(self):
         return self.name
