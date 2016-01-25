@@ -64,7 +64,7 @@
 		</span>
 		<span class="b-blog-entry_b-info_b-link">
 			<a href="{{ post_url }}">
-				{% if post.closed %}Обсуждение закрыто ({{ post.comment_set.count| default:0 }}){% else %}Обсуждение: <span class="js-comments g-bold">{{ post.comment_set.count| default:0 }}</span>{% endif %}<!FIXME: bold updated comments>
+				{% if post.closed %}Обсуждение закрыто ({{ post.comment_set.count| default:0 }}){% else %}Обсуждение: <span class="js-comments">{{ post.comment_set.count| default:0 }}</span>{% endif %}<!FIXME: bold updated comments>
 			</a>
 		</span>
 	</div>
