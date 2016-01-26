@@ -69,10 +69,29 @@ class Smileys(Extension):
         md.ESCAPED_CHARS.append(':')
 
 
+class Spoilers(Extension):
+
+    class SpoilerPattern(Pattern):
+
+        def __init__(self):
+            Pattern.__init__(self, r'(%{2})(?P<contents>.+?)\2')
+
+        def handleMatch(self, m):
+            el = etree.Element('span')
+            el.set('class', 'spoiler')
+            el.text = m.group('contents')
+            return el
+
+    def extendMarkdown(self, md, md_globals):
+        md.inlinePatterns.add('spoilers', self.SpoilerPattern(), '_end')
+        md.ESCAPED_CHARS.append('%')
+
+
 md = Markdown(extensions=[
     EscapeHtml(),
     RestrictImageHosts(settings.ALLOWED_IMAGE_PATTERNS),
     Smileys(),
+    Spoilers(),
 ])
 
 @register.filter

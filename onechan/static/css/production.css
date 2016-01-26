@@ -2200,3 +2200,21 @@ html[xmlns] .g-clearfix {
 .favourite-icon-disabled {
 	background-image: url("/static/ico/favorites-false.png");
 }
+
+.spoiler {
+	background-color: black;
+	color: black;
+}
+
+.spoiler:hover {
+	background-color: inherit;
+	transition: background-color 0.3s;
+}
+
+.spoiler img {
+	visibility: hidden;
+}
+
+.spoiler:hover img {
+	visibility: visible;
+}
