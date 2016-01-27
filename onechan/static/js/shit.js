@@ -142,6 +142,44 @@
 		e.preventDefault();
 	});
 
+	$(document).on('mouseenter', '.comment-ref', function(e) {
+		$.ajax({
+			type: 'GET',
+			url: e.target.dataset.commentUrl,
+			complete: function(xhr, status) {
+				var resp = JSON.parse(xhr.responseText);
+				console.log(resp);
+				if (resp.success) {
+					var cont = $('<div class="comment-ref-preview"></div>');
+					cont.append(resp.html);
+
+					cont.css('left', e.pageX + 2);
+					cont.css('top', e.pageY + 2);
+
+					cont.on('mouseleave', function(e) {
+						if (e.target != cont[0])
+							return;
+						var timeoutId = window.setTimeout(function() {
+							cont.remove();
+						}, 500);
+						cont.data('hideTimeoutId', timeoutId);
+					});
+					cont.on('mouseenter', function(e) {
+						if (e.target != cont[0])
+							return;
+						var timeoutId = cont.data('hideTimeoutId');
+						console.log(timeoutId);
+						if (timeoutId) {
+							window.clearTimeout();
+						};
+					});
+
+					cont.appendTo('#comment_ref_previews');
+				};
+			}
+		});
+	});
+
 	$('#news_addform_category').select2({
 		allowClear: true,
 		width: "100%",

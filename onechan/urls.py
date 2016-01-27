@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^news/(?P<post_id>[0-9]+)/set_favourite$', views.set_favourite, name='set_favourite'),
 
     url(r'^comments$', views.last_comments, name='last_comments'),
+    url(r'^comments/(?P<comment_id>[0-9]+)$', views.get_comment, name='get_comment'),
 ]

@@ -2218,3 +2218,18 @@ html[xmlns] .g-clearfix {
 .spoiler:hover img {
 	visibility: visible;
 }
+
+#comment_ref_previews {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.comment-ref-preview {
+	position: absolute;
+	z-index: 5;
+}
+
+.comment-ref-preview > .b-comment {
+	border: 1px solid #DDD;
+}

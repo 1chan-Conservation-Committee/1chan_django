@@ -108,6 +108,9 @@ class CommentRefs(Extension):
                     comment_id
                 ))
                 el.set('class', 'comment-ref')
+                el.set('data-comment-url',
+                    reverse('onechan:get_comment', kwargs={'comment_id': comment_id})
+                )
                 el.text = '>>{}'.format(comment_id)
                 return el
             except Exception:

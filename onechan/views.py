@@ -153,6 +153,17 @@ def add_comment(request, post_id):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+def get_comment(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    return JsonResponse({
+        'success': True,
+        'html': render_to_string(
+            'onechan/comment_partial.html',
+            context={'comment': comment},
+            request=request
+        )
+    })
+
 def rate_post(request, post_id):
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
