@@ -4,11 +4,13 @@ from django.template.defaultfilters import stringfilter
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 from markdown import Markdown
 from markdown.extensions import Extension
 from markdown.treeprocessors import Treeprocessor
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
+from ..models import Comment
 
 
 register = template.Library()
@@ -87,12 +89,44 @@ class Spoilers(Extension):
         md.ESCAPED_CHARS.append('%')
 
 
+class CommentRefs(Extension):
+
+    class CommentRefPattern(Pattern):
+
+        def __init__(self):
+            Pattern.__init__(self, r'(>{2})(?P<comment_id>\d+)')
+
+        def handleMatch(self, m):
+            comment_id = int(m.group('comment_id'))
+            try:
+                comment = Comment.objects.get(pk=comment_id)
+                el = etree.Element('a')
+                el.set('href', '{}#{}'.format(
+                    reverse('onechan:show_post', kwargs={
+                        'post_id': comment.post.id
+                    }),
+                    comment_id
+                ))
+                el.set('class', 'comment-ref')
+                el.text = '>>{}'.format(comment_id)
+                return el
+            except Exception:
+                return '>>{}'.format(comment_id)
+
+    def extendMarkdown(self, md, md_globals):
+        md.inlinePatterns.add('comment_refs', self.CommentRefPattern(), '_end')
+
+
 md = Markdown(extensions=[
     EscapeHtml(),
     RestrictImageHosts(settings.ALLOWED_IMAGE_PATTERNS),
     Smileys(),
     Spoilers(),
+    CommentRefs(),
 ])
+
+# sorry mommy i am a dirty monkey patcher
+md.parser.blockprocessors['quote'].RE = re.compile(r'(^|\n)[ ]{0,3}>(?!\>\d)[ ]?(.*)')
 
 @register.filter
 @stringfilter
