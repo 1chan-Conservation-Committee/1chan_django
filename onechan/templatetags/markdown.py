@@ -103,7 +103,7 @@ class CommentRefs(Extension):
                 el = etree.Element('a')
                 el.set('href', '{}#{}'.format(
                     reverse('onechan:show_post', kwargs={
-                        'post_id': comment.post.id
+                        'post_id': comment.post_id
                     }),
                     comment_id
                 ))

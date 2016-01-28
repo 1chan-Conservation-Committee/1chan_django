@@ -1,7 +1,7 @@
 {% extends 'onechan/base.html' %}
 {% load staticfiles %}
 {% block title %}
-{{ post.title }} - Пост №{{post.id}}
+{{ post.title }} &mdash; пост №{{post.id}}
 {% endblock %}
 {% block ws_room %}
 <script type="text/javascript">
@@ -10,20 +10,41 @@ window.wsRoom = 'news_{{ post.id }}';
 </script>
 {% endblock %}
 {% block content %}
+<header>
+	<h1>{{ post.title }} &mdash; пост №{{post.id}}</h1>
+	<hr>
+</header>
 
-{% include 'onechan/posts_list_header.html' %}
+<main>
 {% include 'onechan/post_partial.html' with full_text=True %}
+</main>
 
-<div class="l-comments-wrap">
+<section class="comments">
+<header>
+	<h1>Комментарии</h1>
+</header>
+{% for comment in post.comments.all %}
+	{% include 'onechan/comment_partial.html' %}
+{% endfor %}
+</section>
+
+<section class="post-stats">
+	<span class="post-stats-readers">Читают: <strong id="post_stats_reading">-</strong></span>
+	{% if not post.closed %}
+	<span class="post-stats-writers">Отвечают: <strong id="post_stats_writing">-</strong></span>
+	{% endif %}
+	<span class="post-stats-views">Всего: {{ post.view_count }} просмотр{{ post.view_count| pluralize:"ов" }}</span>
+</section>
+
+<section class="comment-form">
+</section>
+<!--<div class="l-comments-wrap">
 {% for comment in post.comment_set.all %}
 	{% include 'onechan/comment_partial.html' %}
 {% endfor %}
 
 <div class="b-post-statistics">
-	Читают: <strong id="post_stats_reading">-</strong>{% if not post.closed %} | Отвечают: <strong id="post_stats_writing">-</strong>{% endif %}
-	<span class="b-post-statistics_m-right">
-		Всего: <span id="post_stats_total">{{ post.view_count }} просмотр{{ post.view_count| pluralize:"ов" }}</span>
-	</span>
+
 </div>
 
 {% if not post.closed %}
@@ -57,5 +78,5 @@ window.wsRoom = 'news_{{ post.id }}';
 </form>
 {% endif %}
 
-</div>
+</div>-->
 {% endblock %}

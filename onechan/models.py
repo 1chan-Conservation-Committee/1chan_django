@@ -68,6 +68,10 @@ class Post(models.Model):
         return self._favourers
 
     @property
+    def comments(self):
+        return self.comment_set.select_related('author_board')
+
+    @property
     def view_count(self):
         return get_view_count(self)
 

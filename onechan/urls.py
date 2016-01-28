@@ -3,7 +3,7 @@ from . import views
 # Create your views here.
 
 urlpatterns = [
-    url(r'^$', views.index),
+    url(r'^$', views.index, name='index'),
     url(r"^news$", views.PostsListView.as_view(), {'posts_type': 'approved'}, name='approved_posts'),
     url(r"^news/all$", views.PostsListView.as_view(), {'posts_type': 'all'}, name='all_posts'),
     url(r"^news/hidden$", views.PostsListView.as_view(), {'posts_type': 'hidden'}, name='hidden_posts'),

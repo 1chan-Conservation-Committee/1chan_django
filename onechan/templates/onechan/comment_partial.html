@@ -1,19 +1,23 @@
 {% load staticfiles %}
 {% load markdown %}
-<div class="b-comment{% if False %} m-new{% endif %}" id="comment_{{ comment.id }}">
-	<div class="b-comment_b-info">
-		<!FIXME: js links>
-		{{ comment.pub_date| date:'d M Y @ H:i' }}, <a href="{% url 'onechan:show_post' post_id=comment.post.id %}#{{ comment.id }}">№</a><a href="javascript://" class="js-paste-link" name="{{ comment.id }}">{{ comment.id }}</a>
-		<a href="#" class="js-remove-button g-hidden">
-			<img src="{% static 'ico/remove.gif' %}" width="16" height="16" alt="{{ comment.id }}" />
-		</a>
-		{% if comment.author_board %}
-			<img src="{{ comment.author_board.img.url }}" class="b-comment_b-homeboard" width="16" height="16"
-			alt="Аноним выбрал принадлежность «{{ comment.author_board.name }}»"
-			title="Аноним выбрал принадлежность «{{ comment.author_board.name }}»"/>
-		{% endif %}
-	</div>
-	<div class="b-comment_b-body g-clearfix">
-		{{ comment.text| markdown }}
-	</div>
+
+<article class='comment' id="comment_{{ comment.id }}">
+<header>
+	<h1>Комментарий <a href="{% url 'onechan:show_post' post_id=comment.post_id %}#comment_{{ comment.id }}">№{{comment.id}}</a>:</h1>
+</header>
+<div class="comment-body">
+	{{ comment.text| markdown }}
 </div>
+<footer class="comment-attrs">
+	<span class="comment-pubdate">
+		<time datetime="{{comment.pub_date.isoformat}}">{{ comment.pub_date| date:'d M Y @ H:i' }}</time>
+	</span>
+	{% if comment.author_board %}
+	<span class="comment-author-board">
+		<img src="{{ comment.author_board.img.url }}"
+			alt="Аноним выбрал принадлежность «{{ comment.author_board.name }}»"
+			title="Аноним выбрал принадлежность «{{ comment.author_board.name }}»" />
+	</span>
+	{% endif %}
+</footer>
+</article>

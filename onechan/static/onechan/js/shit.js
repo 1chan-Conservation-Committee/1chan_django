@@ -55,8 +55,8 @@
 			}
 			case "new_rating": {
 				var elemColl = $('#post_rating_' + msg.data['post_id'].toString());
-				elemColl.removeClass('g-green g-red');
-				elemColl.addClass(msg.data.rating >= 0 ? 'g-green' : 'g-red');
+				elemColl.removeClass('post-rating-positive post-rating-negative');
+				elemColl.addClass(msg.data.rating >= 0 ? 'post-rating-positive' : 'post-rating-negative');
 				elemColl.text(msg.data.rating);
 				break;
 			}

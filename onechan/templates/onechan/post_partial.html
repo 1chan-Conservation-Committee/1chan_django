@@ -1,71 +1,59 @@
 {% load staticfiles %}
 {% load markdown %}
 {% url 'onechan:show_post' post_id=post.id as post_url %}
-<div class="b-blog-entry{% if post.hidden %} m-hidden{% endif %}" id="post_{{ post.id }}">
-	<div class="b-blog-entry_b-header">
-		<!FIXME: get favicons for links >
-		<img src="{% static 'ico/favicons/1chan.ru.gif' %}" width="16" height="16" alt="" />
-	{% if post.pinned %}
-		<img src="{% static 'ico/pinned.png' %}" width="16" height="16" alt="Прикрепленный пост" class="b-blog-entry_b-header_b-pinned-icon" />
-	{% endif %}
-
-	{% if post.category %}
-		<a href="{% url 'onechan:category_posts' category_id=post.category.id %}" class="b-blog-entry_b-header_m-category">{{ post.category.name }}</a>
+<article class="post" id="post_{{post.id}}">
+	<header>
+		<h2>
+		{% if post.category %}
+			<a href="{% url 'onechan:category_posts' category_id=post.category.id %}" class="post-category">{{ post.category.name }}</a>
 		&rarr;
-	{% endif %}
-
-		<a href="{{ post.link| default:post_url }}"
-				{% if post.link %}class="m-external"{% endif %} >
+		{% endif %}
+		<a href="{{ post.link| default:post_url }}"{% if post.link %}class="post-link-external" target="_blank"{% endif %}>
 			{{ post.title }}
 		</a>
-
-	</div>
-	<div class="b-blog-entry_b-body g-clearfix">
-			{{ post.text| markdown }}
+	</header>
+	<div class="post-body">
+		{{ post.text| markdown }}
 		{% if full_text %}
 			{{ post.text_full| markdown }}
 		{% elif post.text_full %}
-			<p><a href="{{ post_url }}">Читать дальше</a></p>
+			<p><a class="post-link-more" href="{{ post_url }}">Читать дальше</a></p>
 		{% endif %}
         {% if post.hidden %}
-        	<p><em>{{ post.hide_reason }}</em></p>
+        	<small class="post-hide-reason">{{ post.hide_reason }}</small>
         {% endif %}
 	</div>
-
-	<div class="b-blog-entry_b-info" id="post_{{ post.id }}_info">
-		<!FIXME: FUCKING HARDCODED URLS IN THE ENTIRE PANEL >
-		<span class="b-blog-entry_b-info_b-control">
-			<span class="favourite-icon favourite-icon-{% if post in favourites %}active{% else %}disabled{% endif %}"
+	<footer class="post-attrs">
+		<span class="favourite-icon favourite-icon-{% if post in favourites %}active{% else %}disabled{% endif %}"
 				data-favourite-url="{% url 'onechan:set_favourite' post_id=post.id %}"
 				data-favourite-current-value="{% if post in favourites %}1{% else %}0{% endif %}"
-				id="post_{{ post.id }}_favorite"></span>
-			<a href="javascript:;" class="js-hide-link g-hidden"><img src="{% static 'ico/oh-my-eyes.png' %}" width="16" height="16" alt="{{ post.id }}" /></a>
-			<span>|</span>
+				id="post_{{ post.id }}_favorite">
+			<span class="fa fa-star"></span>
+		</span>
 		{% if post.rateable %}
 			<span class="post-rate-buttons" data-rate-url="{% url 'onechan:rate_post' post_id=post.id %}" >
-				<img src="{% static 'ico/plus_grey.gif' %}" width="9" height="11" alt="" data-rate-value="1" />
-				<strong id="post_rating_{{ post.id }}" class="g-{% if post.rating >= 0 %}green{% else %}red{% endif %} js-rate">{{ post.rating }}</strong>
-				<img src="{% static 'ico/minus_grey.gif' %}" width="9" height="11" alt="" data-rate-value="-1" />
-				<span>|</span>
+				<span class="fa fa-plus-square-o" data-rate-value="1"></span>
+				<strong id="post_rating_{{ post.id }}" class="post-rating post-rating-{% if post.rating >= 0 %}positive{% else %}negative{% endif %}">{{ post.rating }}</strong>
+				<span class="fa fa-minus-square-o" data-rate-value="-1"></span>
 			</span>
 		{% endif %}
-
-			<span>{{ post.pub_date | date:'d M Y @ H:i' }}</span>
-			<span>|</span>
-			<span>
-				<a href="{{ post_url }}" class="g-disabled">№{{post.id}}</a>
-			</span>
-			<span>|</span>
-			{% if post.author_board %}
-				<img class="b-comment_b-homeboard" src="{{ post.author_board.img.url }}" width="16" height="16" alt="" />
-			{% else %}
-				<img class="b-comment_b-homeboard" src="{% static 'ico/homeboards/anonymous.png' %}" width="16" height="16" alt="" />
-			{% endif %}
+		<span class="post-pubdate">
+			<time datetime="{{post.pub_date.isoformat}}">{{ post.pub_date | date:'d M Y @ H:i' }}</time>
 		</span>
-		<span class="b-blog-entry_b-info_b-link">
+		<span class="post-id">
+			<a href="{{ post_url }}">№{{post.id}}</a>
+		</span>
+		<span class="post-author-board">
+		{% if post.author_board %}
+			<img src="{{ post.author_board.img.url }}"/>
+		{% else %}
+			<span class="fa fa-lg fa-user-secret"></span>
+		{% endif %}
+		</span>
+		<span class="post-comment-count">
 			<a href="{{ post_url }}">
-				{% if post.closed %}Обсуждение закрыто ({{ post.comment_set.count| default:0 }}){% else %}Обсуждение: <span class="js-comments">{{ post.comment_set.count| default:0 }}</span>{% endif %}<!FIXME: bold updated comments>
+				{% if post.closed %}Обсуждение закрыто{% else %}Обсудить{% endif %} ({{ post.comment_set.count| default:0 }})
 			</a>
 		</span>
-	</div>
-</div>
+	<footer>
+</article>

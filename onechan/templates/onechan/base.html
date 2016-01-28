@@ -5,111 +5,45 @@
 	<title>{% block title %}{% endblock %} | 1chan </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="icon"       type="image/x-icon" href="{% static 'ico/favicon.ico' %}" />
-	<link rel="stylesheet" type="text/css"     href="{% static 'css/production.css' %}"  media="all" />
+	<link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700italic,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css"     href="{% static 'onechan/style.css' %}"  media="all" />
 	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 	<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 	<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 	{% block ws_room %}{% endblock %}
 </head>
 <body>
-<div class="l-wrap">
-	<div class="b-top-panel">
+<div class="container">
+<nav class="sitenav">
+	<header>
+		<a href="{% url 'onechan:index' %}">
+			<img class="sitenav-logo" src="{% static 'onechan/img/mascot.jpg' %}">
+			<h1>1chan</h1>
+		</a>
+	</header>
+	<ul class="sitenav-links">
+		<li><span class="fa fa-fw fa-check-circle"></span><a href="{% url 'onechan:approved_posts' %}">Одобренные</a></li>
+		<li><span class="fa fa-fw fa-question-circle"></span><a href="{% url 'onechan:all_posts' %}">Все</a></li>
+		<li><span class="fa fa-fw fa-star"></span><a href="{% url 'onechan:favourite_posts' %}">Избранное</a></li>
+	</ul>
+	<hr>
+	<ul class="sitenav-links">
+		<li><span class="fa fa-fw fa-tags"></span><a href="{% url 'onechan:category_list' %}">Категории</a></li>
+		<li><span class="fa fa-fw fa-comments"></span><a href="{% url 'onechan:last_comments' %}">Последние комментарии</a></li>
+	</ul>
+	<hr>
+	<footer class="sitenav-stats">
 		<ul>
-			<li><a href="/chat/">Анонимные чаты</a></li>
-			<li>|</li>
-			<li class="b-top-panel_m-right"><a href="http://1chan.ru/chat/support/">Обратная связь</a></li>
+			<li>Всего пользователей за сегодня: {{stats_today_users}}</li>
+			<li>Постов за день: {{stats_today_posts}}</li>
+			<li>Скорость постинга: &#x2248;{{stats_speed}}</li>
 		</ul>
-	</div>
-	<div class="b-header-block m-mascot-news"><!--FIXME: dynamic mascot -->
-		<div class="b-header-block_b-logotype">
-			<a href="/"><img src="{% static 'img/logo.png' %}" width="250" height="80" alt="1chan.ru" /></a>
-		</div>
-		<div class="b-header-block_b-stats" id="stats_block">
-			<p>
-				Вижу <strong id="stats_online">-</strong>! Всего сегодня было <strong id="stats_hosts">{{ stats_today_users }}</strong>.<br />
-				За день постов — <strong id="stats_posts">{{ stats_today_posts }}</strong>, скорость ~<strong id="stats_speed">{{ stats_speed }}</strong> п/ч.
-				<span class="g-hidden" id="stats_unique_posters">FIXME: unique posters (?)</span>
-			</p>
-		</div>
-	</div>
-
-	<div class="l-left-panel-wrap">
-	    <div class="b-menu-panel">
-	         <div class="b-menu-panel_b-title">
-	            <h2>Первый канал</h2>
-	        </div>
-	        <div class="b-menu-panel_b-links">
-            <ul>
-            	<li class="m-active"><a href="{% url 'onechan:approved_posts' %}">Одобренные</a> | <a href="{% url 'onechan:all_posts' %}">Все</a></li>
-            	<li class="b-menu-panel_b-footer"><a href="/share/">сообщить новость</a></li>
-		    </ul>
-		    </div>
-		</div>
-
-	    <div class="b-menu-panel">
-	         <div class="b-menu-panel_b-title">
-	            <h2>Общение</h2>
-	        </div>
-	        <div class="b-menu-panel_b-links">
-	            <ul>
-	            	<li class="m-active"><a href="/d/">/d/ - Дискуссии об имиджбордах</a></li>
-		    	</ul>
-                <div class="b-menu-panel_b-conference" style="padding-top: 10px; font-size: 10px; color: #bbb;">Jabber-Конференции:<br> <u>news@conference.1chan.ru</u><br /><u>press@conference.1chan.ru</u></div>
-		    </div>
-		</div>
-	</div>
-
-	<div class="l-content-wrap">
-	{% block content %}
-	{% endblock %}
-	</div>
-
-	<div class="l-footer-wrap m-mascot-news"><!FIXME: dynamic mascot>
-		<div class="b-underlinks">
-			<img src="{% static 'ico/rss.png' %}" width="16" height="16" alt="" />
-			<a href="/news/rss.xml">Одобренные</a> |
-			<img src="{% static 'ico/rss2.png' %}" width="16" height="16" alt="" />
-			<a href="/news/all/rss.xml">Все</a> |
-			<img src="{% static 'ico/jabber.png' %}" width="16" height="16" alt="" />
-			<a href="xmpp:bot@1chan.ru?roster;name=1chan.ru;">Jabber-бот</a>
-		</div>
-		<div class="b-footer-imgboards">
-			<h2>Имиджборды:</h2>
-			<ul>
-			<!FIXME: loop for boards >
-				<li>
-				{% if True %}<!FIXME check the board >
-					<img src="{% static 'ico/offline.png' %}" width="16" height="16" alt="Сайт недоступен" />
-					<a class="g-strike" href=""></a>
-				{% else %}
-					<img src="" width="16" height="16" alt="" />
-					<a href=""></a>
-				{% endif %}
-
-				</li>
-			</ul>
-		</div>
-		<div class="b-footer-services">
-			<h2>Другие ссылки:</h2>
-			<ul>
-			<!FIXME: loop for services >
-				<li>
-				{% if False %}<!FIXME check the service >
-					<img src="{% static 'ico/offline.png' %}" width="16" height="16" alt="Сайт недоступен" />
-					<a class="g-strike" href="http://parasha.tk">imgboard name</a>
-				{% else %}
-					<img src="" width="16" height="16" alt="" />
-					<a href="http://prrrrr.pssss">service name</a>
-				{% endif %}
-				</li>
-			</ul>
-		</div>
-		<div class="b-footer-copyrights">
-			<span>При копировании материалов ни в коем случае не давать ссылку на <a href="/">1chan.ru</a></span>
-		</div>
-	</div>
-</div>
-<div id="comment_ref_previews"></div>
+	</footer>
+</nav>
+<section class='content'>
+{% block content %}
+{% endblock content %}
 {% if debug %}
 <div class="debug-queries">
 {% for query in sql_queries %}
@@ -119,6 +53,9 @@
 {% endfor %}
 </div>
 {% endif %}
-<script src="{% static 'js/shit.js' %}"></script>
+</section>
+</div>
+<div id="comment_ref_previews"></div>
+<script src="{% static 'onechan/js/shit.js' %}"></script>
 </body>
 </html>
