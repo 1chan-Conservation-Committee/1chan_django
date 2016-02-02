@@ -4,102 +4,60 @@
 Добавить новость
 {% endblock %}
 {% block content %}
+<header>
+	<h1>Добавление новости</h1>
+	<hr>
+</header>
 
-<div class="b-blog-form">
-	<h1>Добавить запись:</h1>
-	<div id="placeholder_preview"></div>
-
-	{{ form.non_field_errors }}
-
-	<form action="{% url 'onechan:add_post' %}" method="post" id="blog_form">
+<form action="{% url 'onechan:add_post' %}" method="post" class="post-add-form">
 	{% csrf_token %}
-	<input type="hidden" name="homeboard" value="anonymous" />
-
-		<!FIXME: form handling >
-		<div class="b-blog-form_b-form">
-			<div class="b-blog-form_b-form_b-field" id="blog_form_category">
-				<h2>Категория:</h2>
-				<p>Для отправки поста в категорию, необходимо выбрать её из выпадающего списка,<br />или ввести приватный ключ категории.</p>
-				{{ form.category.errors }}
-				{{ form.category }}
-				<!--<input type="text" name="category" value=""{% if False %} class="g-input-error"{% endif %} />-->
-			    <div><small>Если ты собрался запостить <strong>хуйню</strong>, то оставь это поле пустым.</small></div>
-            </div>
-			<div class="b-blog-form_b-form_b-field">
-				<h2>Заголовок:</h2>
-				{{ form.title.errors }}
-				<input type="text" name="title" value="{{ form.title.value| default:'' }}"{% if form.title.errors %} class="g-input-error"{% endif %} />
-			</div>
-			<div class="b-blog-form_b-form_b-field">
-				<h2>Ссылка:</h2>
-				<p>Ссылка на внешний материал. Оставьте поле пустым, если материал самодостаточен.</p>
-				{{ form.link.errors }}
-				<input type="text" name="link" value="{{ form.link.value| default:'' }}"{% if form.link.errors %} class="g-input-error"{% endif %} />
-			</div>
-			<div class="b-blog-form_b-form_b-field">
-				<h2>Содержание:</h2>
-				<!FIXME: hardcoded url >
-				<p>Можно использовать <a href="/help/markup/" target="_blank">язык разметки</a>.</p>
-				<p>
-					Если текст записи большой, он должен быть разделен на две части: вводную и подробную.
-				</p>
-				{{ form.text.errors }}
-				<textarea name="text" rows="6"{% if form.text.errors %} class="g-input-error"{% endif %}>{{ form.text.value| default:'' }}</textarea>
-				<br />
-				{{ form.text_full.errors }}
-				<textarea name="text_full" rows="9"{% if form.text_full.errors %} class="g-input-error"{% endif %}>{{ form.text_full.value| default:'' }}</textarea>
-			
-			<!FIXME: implement captcha >
-			</div>
-			<div class="b-blog-form_b-form_b-field">
-				<h2>Обратный тест тьюринга:</h2>
-				{{ form.captcha.errors }}
-				{{ form.captcha }}
-				<p>
-					<!FIXME: hardcoded url >
-					Будьте добры, соблюдайте <a href="/help/news/" target="_blank">простые правила</a> при написании сообщений.
-				</p>
-			</div>
-			<div class="b-blog-form_b-form_b-field g-hidden" id="blog_form_moderation">
-				<h2>Модерирование:</h2>
-				<p>После публикации выполнить следующие действия:</p>
-				<label><input type="checkbox" name="rated" /> Одобрить</label>
-				<label><input type="checkbox" name="pinned" /> Закрепить</label>
-				<label><input type="checkbox" name="notrateable" /> Запретить оценивать</label>
-				<label><input type="checkbox" name="closed" /> Запретить комментировать</label>
-			</div>
-			<!FIXME: do something about boards >
-			<div class="b-blog-form_b-form_b-field">
-				<h2>Принадлежность:</h2>
-				<p>
-					Вы, как автор, можете указать <em>свою принадлежность к аудитории определенной имиджборды</em>.
-					Иконка выбранной имиджборды будет отображаться рядом с вашим постом.
-				</p>
-				{{ form.author_board }}
-				</span>
-			</div>
-		</div>
-
-		<div class="b-blog-form_b-actions">
-			<input type="submit" value="Отправить" />
-			<input type="button" value="Предпросмотр" disabled="disabled" id="blog_form_preview_button" />
-		</div>
-
-		<!FIXME: decide what to do with this >
-		<div class="b-blog-form_b-form"  id="blog_form_last_posts" style="display:none">
-			<div class="b-blog-form_b-form_b-field">
-				<h2>Новые сообщения:</h2>
-				<p>С момента начала написания нового поста, были добавлены нижеперечисленные записи. Пожалуйста, избегайте повторяющихся тем сообщений.</p>
-				<div id="placeholder_last_posts"></div>
-				<textarea id="template_last_posts" style="display:none">
-			        <div class="b-live-entry">
-				        <a href="/news/res/<%=id%>/" class="b-live-entry_b-description"><%=title%></a> <% if (category) { %> &larr; <a href="/news/cat/<%=category%>/" class="b-live-entry_b-board"><%=category_title%></a><% } %>
-			        </div>
-		        </textarea>
-			</div>
-		</div>
-	</form>
-</div>
-
-
+	<div class="post-add-form-field">
+		<h2>Категория</h2>
+		<p class="post-add-form-descr">
+			Для отправки поста в категорию, необходимо выбрать её из выпадающего списка, или ввести приватный ключ категории.
+		</p>
+		{{ form.category.errors }}
+		{{ form.category }}
+		<div><small>Если ты собрался запостить <strong>хуйню</strong>, то оставь это поле пустым.</small></div>
+	</div>
+	<div class="post-add-form-field">
+		<h2>Заголовок</h2>
+		{{ form.title.errors }}
+		{{ form.title }}
+	</div>
+	<div class="post-add-form-field">
+		<h2>Ссылка</h2>
+		<p class="post-add-form-descr">
+			Ссылка на внешний материал. Оставьте поле пустым, если материал самодостаточен.
+		</p>
+		{{ form.link.errors }}
+		{{ form.link }}
+	</div>
+	<div class="post-add-form-field">
+		<h2>Текст новости</h2>
+		<p class="post-add-form-descr">
+			<!FIXME: hardcoded url>
+			Можно использовать <a href="/help/markup/" target="_blank">язык разметки</a>.
+			Если текст записи большой, он должен быть разделен на две части: вводную и подробную.
+		</p>
+		{{ form.text.errors }}
+		{{ form.text }}
+		{{ form.text_full.errors }}
+		{{ form.text_full }}
+	</div>
+	<div class="post-add-form-field">
+		<h2>Принадлежность</h2>
+		<p class="post-add-form-descr">
+			Вы, как автор, можете указать свою принадлежность к аудитории определенной <abbr title="параши">имиджборды</abbr>.
+			Иконка выбранной имиджборды будет отображаться рядом с вашим постом.
+		</p>
+		{{ form.author_board.errors }}
+		{{ form.author_board }}
+	</div>
+	<div class="post-add-form-field">
+		{{ form.captcha.errors }}
+		{{ form.captcha }}
+	</p>
+	<p><input type="submit" value="Добавить новость"></p>
+</form>
 {% endblock %}

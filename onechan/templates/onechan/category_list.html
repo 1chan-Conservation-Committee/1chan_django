@@ -4,23 +4,27 @@
 Список категорий
 {% endblock %}
 {% block content %}
-<div class="b-blog-form">
-	<h1>Категории:</h1>
-	<div class="b-blog-form_b-form">
-	{% for category in categories %}
-		<div class="b-blog-form_b-form_b-field">
+
+<header>
+	<h1>Список категорий</h1>
+	<hr>
+</header>
+
+<main class="categories">
+<ul class="fa-ul">
+{% for category in categories %}
+	<li class="categories-entry">
+		<span class="fa fa-tag fa-li"></span>
+		<h2>
 			<a href="{% url 'onechan:category_posts' category_id=category.id %}" class="b-blog-form_b-form_b-field_b-header-link">
-				{{ category.name }} ({{ category.post_set.all.count }})
+			{{ category.name }} ({{ category.post_set.all.count }})
 			</a>
-			<p>
-				{{ category.desciption }}
-			</p>
-		</div>
-	{% empty %}
-		<div class="b-blog-form_b-form_b-field">
-			<h2>Нет категорий для вывода</h2>
-		</div>
-	{% endfor %}
-	</div>
-</div>
+		</h2>
+		<p>
+			{{ category.desciption }}
+		</p>
+	</li>
+{% endfor %}
+</ul>
+</main>
 {% endblock %}

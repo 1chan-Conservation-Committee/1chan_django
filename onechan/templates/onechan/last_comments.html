@@ -12,13 +12,15 @@ window.wsRoom = 'last_comments';
 {% endblock %}
 
 {% block content %}
-<div class="b-static">
+<header>
 	<h1>Последние комментарии</h1>
-</div>
-<div class="l-comments-wrap">
+	<hr>
+</header>
+
+<main class="last-comments">
 <div id="last_comments_new"></div>
 {% for comment in comments %}
 {% include 'onechan/comment_partial.html' %}
 {% endfor %}
-</div>
+</main>
 {% endblock %}

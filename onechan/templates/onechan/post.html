@@ -36,47 +36,12 @@ window.wsRoom = 'news_{{ post.id }}';
 	<span class="post-stats-views">Всего: {{ post.view_count }} просмотр{{ post.view_count| pluralize:"ов" }}</span>
 </section>
 
-<section class="comment-form">
-</section>
-<!--<div class="l-comments-wrap">
-{% for comment in post.comment_set.all %}
-	{% include 'onechan/comment_partial.html' %}
-{% endfor %}
-
-<div class="b-post-statistics">
-
-</div>
-
-{% if not post.closed %}
-<form action="{% url 'onechan:add_comment' post_id=post.id %}" method="post" id="comment_form">
-{% csrf_token %}
-<input type="hidden" name="homeboard" value="" />
-<div class="b-comment-form">
-	<strong>Комментировать:</strong>
-	<span class="b-comment-form_b-helplink">
-		<!FIXME: hardcoded url >
-		<a href="/help/markup/" target="_blank">Правила разметки</a>
-	</span>
-
-	<div>
-		<div class="comment-form-error" id="comment_form_error_captcha"></div>
-		<div class="comment-form-captcha">
-			{{ comment_form.captcha }}
-		</div>
-		<div class="comment-form-author-board">
-			{{ comment_form.author_board }}
-		</div>
-		<div class="comment-form-error" id="comment_form_error_text"></div>
-		<textarea id="comment_form_text" name="text" rows="5"></textarea>
-
-		<input type="submit" value="Отправить" />
-		<span class="b-comment-form_b-uplink">
-			<a href="#top">Вверх &uarr;</a>
-		</span>
-	</div>
-</div>
+<form action="{% url 'onechan:add_comment' post_id=post.id %}" method="post" id="comment_form" class="comment-form">
+	{% csrf_token %}
+	<p><span class="comment-form-error" id="#comment_form_error_captcha"></span><br>{{ comment_form.captcha }}</p>
+	<p>{{ comment_form.author_board}}</p>
+	<p><span class="comment-form-error" id="#comment_form_error_text"></span><br>{{ comment_form.text }}</p>
+	<p><input type="submit" value="Отправить"></p>
 </form>
-{% endif %}
 
-</div>-->
 {% endblock %}

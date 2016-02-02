@@ -19,16 +19,17 @@
 	<header>
 		<a href="{% url 'onechan:index' %}">
 			<img class="sitenav-logo" src="{% static 'onechan/img/mascot.jpg' %}">
-			<h1>1chan</h1>
+			<!--<h1>1chan</h1>-->
 		</a>
 	</header>
 	<ul class="sitenav-links">
 		<li><span class="fa fa-fw fa-check-circle"></span><a href="{% url 'onechan:approved_posts' %}">Одобренные</a></li>
 		<li><span class="fa fa-fw fa-question-circle"></span><a href="{% url 'onechan:all_posts' %}">Все</a></li>
-		<li><span class="fa fa-fw fa-star"></span><a href="{% url 'onechan:favourite_posts' %}">Избранное</a></li>
+		<li><span class="fa fa-fw fa-newspaper-o"></span><a href="{% url 'onechan:add_post' %}">Добавить новость</a></li>
 	</ul>
 	<hr>
 	<ul class="sitenav-links">
+		<li><span class="fa fa-fw fa-star"></span><a href="{% url 'onechan:favourite_posts' %}">Избранное</a></li>
 		<li><span class="fa fa-fw fa-tags"></span><a href="{% url 'onechan:category_list' %}">Категории</a></li>
 		<li><span class="fa fa-fw fa-comments"></span><a href="{% url 'onechan:last_comments' %}">Последние комментарии</a></li>
 	</ul>
@@ -37,7 +38,7 @@
 		<ul>
 			<li>Всего пользователей за сегодня: {{stats_today_users}}</li>
 			<li>Постов за день: {{stats_today_posts}}</li>
-			<li>Скорость постинга: &#x2248;{{stats_speed}}</li>
+			<li>Скорость постинга: &#x2248;{{stats_speed}} постов/час</li>
 		</ul>
 	</footer>
 </nav>

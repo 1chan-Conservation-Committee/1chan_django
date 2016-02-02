@@ -39,6 +39,10 @@ hr {
 	color: inherit;
 }
 
+.sitenav a:link {
+	color: inherit;
+}
+
 .sitenav a:hover {
 	text-decoration: underline;
 }
@@ -272,6 +276,69 @@ hr {
 	float: right;
 }
 
+.comment-form {
+	margin: 1em;
+	padding: 0.5em 1ch;
+	max-width: 70ch;
+	border: 1px solid #DDD;
+	box-shadow: 2px 2px #DDD;
+}
+
+.comment-form > p {
+	margin: 0.5em 0;
+}
+
+.comment-form .comment-form-error {
+	color: white;
+	background-color: #FF6F22;
+}
+
+.comment-form #id_text {
+	width: 100%;
+}
+
+.post-add-form {
+
+}
+
+.post-add-form-field h2 {
+	font-size: 1.2em;
+	margin-bottom: 0;
+}
+
+.post-add-form-field input {
+	min-width: 50%;
+}
+
+.post-add-form-field textarea {
+	min-width: 50%;
+}
+
+.post-add-form-field input[type=submit] {
+	min-width: inherit;
+}
+
+.post-add-form-field p {
+	margin: 0.5em 0;
+}
+
+.post-add-form-field .errorlist {
+	list-style: none;
+	padding: 0.2em;
+	margin: 0.5em 0;
+	color: white;
+	background-color: #FF6F22;
+}
+
+.categories ul {
+	list-style: none;
+	padding: 0.2em;
+	margin: 0.5em 2ch;
+}
+
+.categories-entry h2 {
+	font-size: 1.2em;
+}
 
 #comment_ref_previews {
 	position: absolute;
