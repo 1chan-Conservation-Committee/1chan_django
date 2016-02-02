@@ -69,7 +69,7 @@ class Post(models.Model):
 
     @property
     def comments(self):
-        return self.comment_set.select_related('author_board')
+        return self.comment_set.select_related('author_board').order_by('pk')
 
     @property
     def view_count(self):
