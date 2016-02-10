@@ -170,7 +170,7 @@ server {
   ```sh
   sudo service nginx reload
   uwsgi 1chan.ini
-  PYTHONPATH=$PYTHONPATH:$CWD DJANGO_SETTINGS_MODULE=onechan_django.settings ./ws/server.py
+  ./manage.py runws
   # предыдущую строку желательно выполнить в screen или под nohup, если у вас нет менеджера демонов
   ```
   
