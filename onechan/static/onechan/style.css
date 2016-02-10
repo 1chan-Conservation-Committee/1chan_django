@@ -93,10 +93,58 @@ hr {
 }
 
 .sitenav-logo {
+	position: relative;
+	display: block;
+}
+
+.sitenav-logo-image {
 	display: block;
 	max-width: 80%;
 	max-height: 150px;
 	margin: 5px auto;
+}
+
+.sitenav-logo-stats {
+	position: absolute;
+	right: 0;
+	top: 30%;
+	opacity: 0;
+	transition: opacity 150ms ease-in;
+	padding: 1em;
+	text-align: center;
+	background-color: white;
+	color: black;
+	text-shadow: none;
+	border: 2px solid #DDD;
+	min-width: 30%;
+}
+
+.sitenav-logo:hover .sitenav-logo-stats {
+	opacity: 1;
+}
+
+.sitenav-logo-stats::before {
+	content: "";
+	position: absolute;
+	bottom: -10px;
+	left: 2px;
+	display: block;
+	width: 0;
+	border-width: 10px 10px 0;
+	border-style: solid;
+	border-color: #DDD transparent;
+}
+
+.sitenav-logo-stats::after {
+	content: "";
+	position: absolute;
+	bottom: -8px;
+	left: 4px;
+	display: block;
+	width: 0;
+	border-width: 8px 8px 0;
+	border-style: solid;
+	border-color: #FFF transparent;
 }
 
 .sitenav ul {

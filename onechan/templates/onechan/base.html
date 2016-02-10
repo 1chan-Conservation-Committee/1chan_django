@@ -18,9 +18,11 @@
 <div class="container">
 <nav class="sitenav">
 	<header>
-		<a href="{% url 'onechan:index' %}">
-			<img class="sitenav-logo" src="{% static 'onechan/img/chiyo.png' %}">
-			<!--<h1>1chan</h1>-->
+		<a href="{% url 'onechan:index' %}" class="sitenav-logo">
+			<img class="sitenav-logo-image" src="{% static 'onechan/img/chiyo.png' %}">
+			<div class="sitenav-logo-stats">
+				Вижу <span id="stats_online">-</span>!
+			</div>
 		</a>
 	</header>
 	<ul class="sitenav-links">
