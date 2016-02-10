@@ -1,18 +1,23 @@
 {% load staticfiles %}
 {% load markdown %}
 {% url 'onechan:show_post' post_id=post.id as post_url %}
-<article class="post" id="post_{{post.id}}">
+<article class="post" id="post_{{post.id}}" itemscope itemtype="https://schema.org/NewsArticle">
+	<span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+		<meta itemprop="name" content="1chan">
+		<meta itemprop="logo" content="{% static 'onechan/img/chiyo.png' %}">
+	</span>
+	<meta itemprop="mainEntityOfPage" content="{{ post_url }}">
 	<header>
 		<h2>
 		{% if post.category %}
-			<a href="{% url 'onechan:category_posts' category_id=post.category.id %}" class="post-category">{{ post.category.name }}</a>
+			<a href="{% url 'onechan:category_posts' category_id=post.category.id %}" class="post-category" itemprop='articleSection'>{{ post.category.name }}</a>
 		&rarr;
 		{% endif %}
 		<a href="{{ post.link| default:post_url }}"{% if post.link %}class="post-link-external" target="_blank"{% endif %}>
-			{{ post.title }}
+			<span itemprop="headline name">{{ post.title }}<span>
 		</a>
 	</header>
-	<div class="post-body">
+	<div class="post-body" itemprop='articleBody'>
 		{{ post.text| markdown }}
 		{% if full_text %}
 			{{ post.text_full| markdown }}
@@ -38,7 +43,7 @@
 			</span>
 		{% endif %}
 		<span class="post-pubdate">
-			<time datetime="{{post.pub_date.isoformat}}">{{ post.pub_date | date:'d M Y @ H:i' }}</time>
+			<time itemprop="datePublished" datetime="{{post.pub_date.isoformat}}">{{ post.pub_date | date:'d M Y @ H:i' }}</time>
 		</span>
 		<span class="post-id">
 			<a href="{{ post_url }}">№{{post.id}}</a>
@@ -46,13 +51,15 @@
 		<span class="post-author-board">
 		{% if post.author_board %}
 			<img src="{{ post.author_board.img.url }}"/>
+			<meta itemprop="author" content="Анонимный посетитель сайта {{post.author_board.name}}">
 		{% else %}
 			<span class="fa fa-lg fa-user-secret"></span>
+			<meta itemprop="author" content="Анонимус">
 		{% endif %}
 		</span>
 		<span class="post-comment-count">
 			<a href="{{ post_url }}">
-				{% if post.closed %}Обсуждение закрыто{% else %}Обсудить{% endif %} ({{ post.comment_set.count| default:0 }})
+				{% if post.closed %}Обсуждение закрыто{% else %}Обсудить{% endif %} (<span itemprop="commentCount">{{ post.comment_set.count| default:0 }}</span>)
 			</a>
 		</span>
 	</footer>
