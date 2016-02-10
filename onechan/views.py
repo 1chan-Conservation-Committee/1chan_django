@@ -103,13 +103,16 @@ def add_post(request):
                 post.category = Category.objects.get(key=cat_key)
             post.save()
             post_url = reverse('onechan:show_post', kwargs={'post_id': post.id})
-            notify({
+            msg = {
                 'type': 'new_post',
                 'data': {
                     'title': post.title,
-                    'url' : post_url
+                    'url' : post_url,
                 }
-            })
+            }
+            if cat_key:
+                msg['data']['category'] = post.category.name
+            notify(msg)
             update_posting_stats()
             return redirect(post_url)
         else:

@@ -181,6 +181,15 @@ WS_LISTEN_ADDRESS = ('0.0.0.0', 3000)
 # the channel which is used for communication
 WS_REDIS_CHANNEL = 'ws_notifications'
 
+# xmpp bot settings
+XMPP_REDIS_CONN_SETTINGS = WS_REDIS_CONN_SETTINGS
+XMPP_REDIS_CHANNEL = WS_REDIS_CHANNEL
+XMPP_SERVER_ADDRESS = ()
+XMPP_JID = ''
+XMPP_PASSWORD = ''
+XMPP_MUC_ROOM = ''
+XMPP_MUC_NICKNAME = 'Электронный барин'
+XMPP_NEWS_URL_PREFIX = "https://1chan.example"
 
 try:
     from settings_local import *
