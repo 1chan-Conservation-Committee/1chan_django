@@ -155,8 +155,7 @@ def redis_listener():
             pass # ...
         Room.broadcast_to_room(room, msg)
 
-
-if __name__ == '__main__':
+def start_server():
     logging.basicConfig(format="%(asctime)s:%(levelname)s:%(name)s:%(message)s")
     if settings.DEBUG:
         logging.getLogger('ws').setLevel(logging.DEBUG)
@@ -179,3 +178,6 @@ if __name__ == '__main__':
         loop.run_until_complete(handler.finish_connections(1.0))
         loop.run_until_complete(app.finish())
     loop.close()
+
+if __name__ == '__main__':
+    start_server()    
