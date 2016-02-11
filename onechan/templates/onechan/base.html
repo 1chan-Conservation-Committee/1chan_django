@@ -37,6 +37,11 @@
 		<li><span class="fa fa-fw fa-comments"></span><a href="{% url 'onechan:last_comments' %}">Последние комментарии</a></li>
 	</ul>
 	<hr>
+	<ul class="sitenav-links">
+		<li><span class="fa fa-fw fa-rss-square"></span><a href="{% url 'onechan:news_feed' %}">Одобренные новости</a></li>
+		<li><span class="fa fa-fw fa-rss-square"></span><a href="{% url 'onechan:news_all_feed' %}">Все новости</a></li>
+	</ul>
+	<hr>
 	<footer class="sitenav-stats">
 		<ul>
 			<li>Всего пользователей за сегодня: {{stats_today_users}}</li>

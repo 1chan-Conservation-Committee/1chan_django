@@ -11,6 +11,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlencode
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.syndication.views import Feed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from .models import Post, Category, Comment, Favourite
@@ -197,3 +198,41 @@ def set_favourite(request, post_id):
         'favourite': value,
         'post_id': post.id
     })
+
+
+class NewsFeed(Feed):
+
+    title = 'Одобренные новости'
+    description = ''
+
+    def __init__(self, all=False):
+        super(NewsFeed, self).__init__()
+        self.all = all
+
+    def link(self):
+        return reverse('onechan:approved_posts' if not self.all else 'onechan:all_posts')
+
+    def items(self):
+        if not self.all:
+            return Post.objects.filter(status=Post.APPROVED).order_by('-pub_date')[:10]
+        else:
+            return Post.objects.filter(Q(status=Post.APPROVED) | Q(status=Post.ALL))\
+                .order_by('-pub_date')[:10]
+
+    def item_link(self, item):
+        return reverse('onechan:show_post', kwargs={'post_id': item.id})
+
+    def item_title(self, item):
+        if item.category:
+            return '{} → {}'.format(item.category.name, item.title)
+        else:
+            return item.title
+
+    def item_description(self, item):
+        return render_to_string('onechan/post_rss.html', context={'post': item})
+
+    def item_pubdate(self, item):
+        return item.pub_date
+
+    def item_categories(self, item):
+        return [item.category.name] if item.category else []
