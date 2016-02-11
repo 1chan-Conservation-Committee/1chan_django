@@ -57,6 +57,11 @@
 			<meta itemprop="author" content="Анонимус">
 		{% endif %}
 		</span>
+		{% if request.user.is_staff %}
+		<span class="post-admin-link">
+			<a href="{% url 'admin:onechan_post_change' post.id %}"><span class="fa fa-lg fa-pencil"></span></a>
+		</span>
+		{% endif %}
 		<span class="post-comment-count">
 			<a href="{{ post_url }}">
 				{% if post.closed %}Обсуждение закрыто{% else %}Обсудить{% endif %} (<span itemprop="commentCount">{{ post.comment_set.count| default:0 }}</span>)
