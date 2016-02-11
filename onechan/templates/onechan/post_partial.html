@@ -24,7 +24,7 @@
 		{% elif post.text_full %}
 			<p><a class="post-link-more" href="{{ post_url }}">Читать дальше</a></p>
 		{% endif %}
-        {% if post.hidden %}
+        {% if post.hide_reason %}
         	<small class="post-hide-reason">{{ post.hide_reason }}</small>
         {% endif %}
 	</div>
