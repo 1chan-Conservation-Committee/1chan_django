@@ -36,9 +36,9 @@
 		switch (msg.type) {
 			case "count": {
 				if (msg.room == 'default') {
-					$('#stats_online').text(msg.data.count);
+					$('#stats_online').text(msg.data.count != 3 ? msg.data.count : '3.5');
 				} else {
-					$('#post_stats_reading').text(msg.data.count);
+					$('#post_stats_reading').text(msg.data.count != 3 ? msg.data.count : '3.5');
 				}
 				break;
 			}
