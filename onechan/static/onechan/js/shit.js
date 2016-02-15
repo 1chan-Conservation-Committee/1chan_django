@@ -114,18 +114,17 @@
 	});
 
 	$('.favourite-icon').click(function(e){
-		var value = !(e.target.dataset.favouriteCurrentValue === '1');
-		var url = e.target.dataset.favouriteUrl;
-		var id = e.target.id;
+		var value = !(e.currentTarget.dataset.favouriteCurrentValue === '1');
+		var url = e.currentTarget.dataset.favouriteUrl;
+		var id = e.currentTarget.id;
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: {'value': value},
 			complete: function(xhr, status) {
 				var resp = JSON.parse(xhr.responseText);
-				console.log(id);
 				if (resp.success) {
-					var elem = $("#post_"+id);
+					var elem = $('#'+id);
 					if (value) {
 						elem.removeClass('favourite-icon-disabled');
 						elem.addClass('favourite-icon-active');
