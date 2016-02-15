@@ -38,6 +38,7 @@ window.wsRoom = 'news_{{ post.id }}';
 
 <form action="{% url 'onechan:add_comment' post_id=post.id %}" method="post" id="comment_form" class="comment-form">
 	{% csrf_token %}
+	<a href="{% url 'onechan:help_markup' %}" target="_blank" class="comment-form-help">Справка по разметке</a>
 	<p><span class="comment-form-error" id="#comment_form_error_captcha"></span><br>{{ comment_form.captcha }}</p>
 	<p>{{ comment_form.author_board}}</p>
 	<p><span class="comment-form-error" id="#comment_form_error_text"></span><br>{{ comment_form.text }}</p>

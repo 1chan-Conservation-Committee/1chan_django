@@ -14,7 +14,7 @@ from django.contrib import messages
 from django.contrib.syndication.views import Feed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
-from .models import Post, Category, Comment, Favourite
+from .models import Post, Category, Comment, Favourite, Smiley
 from .forms import NewPostForm, NewCommentForm
 from .utils import notify
 from .utils.stats import update_posting_stats
@@ -236,3 +236,28 @@ class NewsFeed(Feed):
 
     def item_categories(self, item):
         return [item.category.name] if item.category else []
+
+
+def markup_help(request):
+    smileys = Smiley.objects.all()
+    examples = [
+        '# Заголовок первого уровня',
+        '## Заголовок второго уровня',
+        '### Заголовок третьего уровня',
+        '> цитата',
+        '* элемент списка\n* элемент списка\n* элемент списка',
+        '1. элемент списка\n2. элемент списка\n3. элемент списка',
+        '    это\n    абзац\n    с кодом',
+        '***',
+        'тут *курсивный* текст',
+        'тут **жирный** текст',
+        'тут `моноширинный` текст',
+        r'%%спойлер%%',
+        '>>1',
+        '[текст ссылки](https://example.org "Эта ссылка ведет на example.org")',
+        '![Пример картинки](https://i.imgur.com/uORVhj7.jpg ":3")\n\n'
+            'Администратор сайта может ограничивать источники картинок.',
+        '\*\*Используйте \\ для эскейпинга.\*\*',
+    ]
+    examples += [ ':{}:'.format(s.name) for s in smileys]
+    return render(request, 'onechan/markup_help.html', {'examples': examples})

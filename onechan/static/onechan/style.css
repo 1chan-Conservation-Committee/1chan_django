@@ -305,27 +305,27 @@ hr {
 	margin: 0.5em 0;
 }
 
-.comment-body .smiley {
+.smiley {
 	max-width: 40px;
 	max-height: 40px;
 	vertical-align: middle;
 }
 
-.comment-body .spoiler {
+.spoiler {
 	background-color: black;
 	color: black;
 }
 
-.comment-body .spoiler:hover {
+.spoiler:hover {
 	background-color: inherit;
 	transition: background-color 0.3s;
 }
 
-.comment-body .spoiler img {
+.spoiler img {
 	visibility: hidden;
 }
 
-.comment-body .spoiler:hover img {
+.spoiler:hover img {
 	visibility: visible;
 }
 
@@ -368,6 +368,10 @@ hr {
 
 .comment-form > p {
 	margin: 0.5em 0;
+}
+
+.comment-form-help {
+	float: right;
 }
 
 .comment-form .comment-form-error {
@@ -440,4 +444,24 @@ hr {
 .debug-queries {
 	font-size: 12px;
 	font-family: monospace;
+}
+
+.help-markup td {
+	max-width: 50ch;
+}
+
+.help-markup pre {
+	white-space: pre-wrap;
+}
+
+.help-markup blockquote {
+	margin-left: 0;
+	padding-left: 1ch;
+	color: green;
+	font-style: italic;
+	border-left: 5px solid green;
+}
+
+.help-markup img {
+	max-width: 100%;
 }

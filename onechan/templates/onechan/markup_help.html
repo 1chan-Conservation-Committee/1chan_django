@@ -1,0 +1,29 @@
+{% extends 'onechan/base.html' %}
+{% load markdown %}
+{% block title %}
+Справка по разметке
+{% endblock %}
+{% block content %}
+
+<header>
+	<h1>Справка по разметке</h1>
+	<hr>
+</header>
+
+<main class="help-markup">
+<p>
+	Дристаба использует <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a>
+	с дополнениями для разметки новостей и комментариев.
+</p>
+<table>
+<tbody>
+{% for example in examples %}
+<tr>
+	<td class="markup-example"><pre>{{ example }}</pre></td>
+	<td class="markup-example-rendered">{{ example|markdown }}</td>
+</tr>
+{% endfor %}
+<tbody>
+</table>
+</main>
+{% endblock %}

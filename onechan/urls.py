@@ -23,4 +23,6 @@ urlpatterns = [
 
     url(r'^rss/news$', views.NewsFeed(), name='news_feed'),
     url(r'^rss/news/all$', views.NewsFeed(all=True), name='news_all_feed'),
+
+    url(r'^help/markup$', views.markup_help, name='help_markup'),
 ]

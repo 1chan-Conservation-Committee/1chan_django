@@ -37,7 +37,7 @@
 		<h2>Текст новости</h2>
 		<p class="post-add-form-descr">
 			<!FIXME: hardcoded url>
-			Можно использовать <a href="/help/markup/" target="_blank">язык разметки</a>.
+			Можно использовать <a href="{% url 'onechan:help_markup' %}" target="_blank">язык разметки</a>.
 			Если текст записи большой, он должен быть разделен на две части: вводную и подробную.
 		</p>
 		{{ form.text.errors }}
