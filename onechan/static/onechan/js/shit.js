@@ -71,7 +71,7 @@
 			}));
 		};
 	}
-	$('#comment_form_text').on({
+	$('#comment_form #id_text').on({
 		focus: sendWritingState(true),
 		blur: sendWritingState(false)
 	})
