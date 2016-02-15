@@ -1,4 +1,5 @@
 from itertools import chain
+from django.core.exceptions import ValidationError
 import django.forms as forms
 import django.forms.widgets as widgets
 from django.utils.encoding import (
@@ -52,6 +53,20 @@ class CustomAttrsSelect(widgets.Select):
         return '\n'.join(output)
 
 
+class CategoryKeyField(forms.Field):
+
+    def __init__(self, **kwargs):
+        super(CategoryKeyField, self).__init__(**kwargs)
+
+    def clean(self, value):
+        if not value and not self.required:
+            return None
+        try:
+            return Category.objects.get(key=value)
+        except Category.DoesNotExist:
+            raise ValidationError('Данная категория не существует')
+
+
 def make_category_choices():
     return [('', '', {})] +\
         [(cat.key, cat.name, {}) for cat in Category.objects.filter(hidden=False)]
@@ -62,7 +77,7 @@ def make_homeboard_choices():
 
 
 class NewPostForm(forms.ModelForm):
-    category = forms.CharField(
+    category = CategoryKeyField(
         required=False,
         widget=CustomAttrsSelect(
             choices=make_category_choices, attrs={'id': 'news_addform_category'},
@@ -81,7 +96,7 @@ class NewPostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['title', 'link', 'text', 'text_full', 'author_board']
+        fields = ['title', 'link', 'text', 'text_full', 'author_board', 'category']
 
 
 class NewCommentForm(forms.ModelForm):

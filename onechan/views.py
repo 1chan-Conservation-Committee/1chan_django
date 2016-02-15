@@ -98,11 +98,7 @@ def add_post(request):
         post = Post(author_ip=request.META['REMOTE_ADDR'])
         form = NewPostForm(request.POST, instance=post)
         if form.is_valid():
-            post = form.save(commit=False)
-            cat_key = form.cleaned_data['category']
-            if cat_key:
-                post.category = Category.objects.get(key=cat_key)
-            post.save()
+            post = form.save()
             post_url = reverse('onechan:show_post', kwargs={'post_id': post.id})
             msg = {
                 'type': 'new_post',
@@ -111,7 +107,7 @@ def add_post(request):
                     'url' : post_url,
                 }
             }
-            if cat_key:
+            if post.category:
                 msg['data']['category'] = post.category.name
             notify(msg)
             update_posting_stats()
