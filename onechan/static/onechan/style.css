@@ -207,6 +207,12 @@ hr {
 .post-body {
 	margin-left: 2ch;
 	font-size: 0.9em;
+	max-height: 50em;
+	overflow: auto;
+}
+
+.post-body img {
+	max-width: 100%;
 }
 
 .post-link-more {
@@ -291,6 +297,8 @@ hr {
 
 .comment-body {
 	margin-left: 2ch;
+	max-height: 30em;
+	overflow: auto;
 }
 
 .comment-body blockquote {
@@ -303,6 +311,10 @@ hr {
 
 .comment-body p {
 	margin: 0.5em 0;
+}
+
+.comment-body img {
+	max-width: 100%;
 }
 
 .smiley {
