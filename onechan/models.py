@@ -45,6 +45,11 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def favicon(self):
+        if self.link and self.link.startswith(('https', 'http')):
+            return "https://www.google.com/s2/favicons?domain=" + self.link
+
     def rate(self, rater_ip, value):
         if not self.rateable or Rater.objects.filter(ip=rater_ip, post=self).exists():
             return False

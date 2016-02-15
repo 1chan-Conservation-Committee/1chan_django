@@ -9,6 +9,9 @@
 	<meta itemprop="mainEntityOfPage" content="{{ post_url }}">
 	<header>
 		<h2>
+		{% if post.link %}
+			<span class="post-favicon"><img src="{{ post.favicon }}"></span>
+		{% endif %}
 		{% if post.category %}
 			<a href="{% url 'onechan:category_posts' category_id=post.category.id %}" class="post-category" itemprop='articleSection'>{{ post.category.name }}</a>
 		&rarr;
