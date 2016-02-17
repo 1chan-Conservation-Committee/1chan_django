@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load markdown %}
+{% load humanize %}
 {% url 'onechan:show_post' post_id=post.id as post_url %}
 <article class="post" id="post_{{post.id}}" itemscope itemtype="https://schema.org/NewsArticle">
 	<span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
@@ -36,17 +37,19 @@
 				data-favourite-url="{% url 'onechan:set_favourite' post_id=post.id %}"
 				data-favourite-current-value="{% if post in favourites %}1{% else %}0{% endif %}"
 				id="post_{{ post.id }}_favorite">
-			<span class="fa fa-star"></span>
+			<span class="fa fa-lg fa-star"></span>
 		</span>
 		{% if post.rateable %}
 			<span class="post-rate-buttons" data-rate-url="{% url 'onechan:rate_post' post_id=post.id %}" >
-				<span class="fa fa-plus-square-o" data-rate-value="1"></span>
+				<span class="fa fa-lg fa-plus-square-o" data-rate-value="1"></span>
 				<strong id="post_rating_{{ post.id }}" class="post-rating post-rating-{% if post.rating >= 0 %}positive{% else %}negative{% endif %}">{{ post.rating }}</strong>
-				<span class="fa fa-minus-square-o" data-rate-value="-1"></span>
+				<span class="fa fa-lg fa-minus-square-o" data-rate-value="-1"></span>
 			</span>
 		{% endif %}
 		<span class="post-pubdate">
-			<time itemprop="datePublished" datetime="{{post.pub_date.isoformat}}">{{ post.pub_date | date:'d M Y @ H:i' }}</time>
+			<time itemprop="datePublished" datetime="{{post.pub_date.isoformat}}" title="{{ post.pub_date| date:'DATETIME_FORMAT' }}">
+				{{ post.pub_date | naturaltime }}
+			</time>
 		</span>
 		<span class="post-id">
 			<a href="{{ post_url }}">№{{post.id}}</a>

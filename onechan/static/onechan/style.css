@@ -352,13 +352,18 @@ hr {
 }
 
 .comment-attrs {
-	text-align: right;
 	font-size: 0.8em;
 	color: #777;
-	font-style: italic;
+	display: flex;
+	justify-content: space-between;
 }
 
-.comment-attrs > span {
+.comment-pubdate {
+	margin-right: 0;
+	margin-left: auto;
+}
+
+.comment-author-board {
 	margin-left: 1ch;
 }
 
@@ -393,6 +398,7 @@ hr {
 }
 
 .comment-form-help {
+	font-size: 0.8em;
 	float: right;
 }
 
@@ -403,6 +409,7 @@ hr {
 
 .comment-form #id_text {
 	width: 100%;
+	box-sizing: border-box;
 }
 
 .post-add-form {
