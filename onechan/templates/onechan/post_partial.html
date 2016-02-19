@@ -56,7 +56,9 @@
 		</span>
 		<span class="post-author-board">
 		{% if post.author_board %}
-			<img src="{{ post.author_board.img.url }}"/>
+			<img src="{{ post.author_board.img.url }}"
+				alt="Аноним выбрал принадлежность «{{ post.author_board.name }}»"
+				title="Аноним выбрал принадлежность «{{ post.author_board.name }}»"/>
 			<meta itemprop="author" content="Анонимный посетитель сайта {{post.author_board.name}}">
 		{% else %}
 			<span class="fa fa-lg fa-user-secret"></span>
