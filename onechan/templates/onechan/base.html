@@ -25,6 +25,7 @@
 			</div>
 		</a>
 	</header>
+	<div id="nav_collapse" class="sitenav-collapsed">
 	<ul class="sitenav-links">
 		<li><span class="fa fa-fw fa-check-circle"></span><a href="{% url 'onechan:approved_posts' %}">Одобренные</a></li>
 		<li><span class="fa fa-fw fa-question-circle"></span><a href="{% url 'onechan:all_posts' %}">Все</a></li>
@@ -49,6 +50,10 @@
 			<li>Скорость постинга: &#x2248;{{stats_speed}} постов/час</li>
 		</ul>
 	</footer>
+	</div>
+	<div class="sitenav-show-collapsed">
+		<span class="fa fa-ellipsis-h fa-lg"></span>
+	</div>
 </nav>
 <section class='content'>
 {% block content %}

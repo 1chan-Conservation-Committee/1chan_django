@@ -227,4 +227,8 @@
 		templateResult: formatHomeboardChoice,
 	})
 
+	$('.sitenav-show-collapsed').click(function(e){
+		$('#nav_collapse').toggleClass('sitenav-collapsed');
+	});
+
 })();
