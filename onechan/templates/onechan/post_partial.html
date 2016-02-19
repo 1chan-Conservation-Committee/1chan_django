@@ -47,9 +47,15 @@
 			</span>
 		{% endif %}
 		<span class="post-pubdate">
+			{% if post.is_pubdate_within_week %}
 			<time itemprop="datePublished" datetime="{{post.pub_date.isoformat}}" title="{{ post.pub_date| date:'DATETIME_FORMAT' }}">
 				{{ post.pub_date | naturaltime }}
 			</time>
+			{% else %}
+			<time itemprop="datePublished" datetime="{{post.pub_date.isoformat}}" title="{{ post.pub_date | naturaltime }}">
+				{{ post.pub_date| date:'DATETIME_FORMAT' }}
+			</time>
+			{% endif %}
 		</span>
 		<span class="post-id">
 			<a href="{{ post_url }}">№{{post.id}}</a>

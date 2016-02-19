@@ -3,6 +3,13 @@ from django.utils import timezone
 from .utils.stats import get_view_count, update_view_count
 
 
+class PubDateUtilMixin(object):
+
+    def is_pubdate_within_week(self):
+        delta = timezone.now() - self.pub_date
+        return delta.days < 7
+
+
 class Category(models.Model):
     key = models.CharField(max_length=32, unique=True)
     name = models.CharField(max_length=255, unique=True)
@@ -13,7 +20,7 @@ class Category(models.Model):
         return self.name
 
 
-class Post(models.Model):
+class Post(PubDateUtilMixin, models.Model):
     title = models.CharField(max_length=255)
     link = models.CharField(max_length=255, blank=True)
     text = models.TextField()
@@ -84,7 +91,7 @@ class Post(models.Model):
         update_view_count(self, ip)
 
 
-class Comment(models.Model):
+class Comment(PubDateUtilMixin, models.Model):
     author_ip = models.GenericIPAddressField()
     author_board = models.ForeignKey('Homeboard', null=True, blank=True, on_delete=models.SET_NULL)
     pub_date = models.DateTimeField(default=timezone.now)
