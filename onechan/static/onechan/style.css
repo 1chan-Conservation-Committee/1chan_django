@@ -470,9 +470,18 @@ hr {
 .comment-ref-preview {
 	position: absolute;
 	z-index: 5;
+	min-width: 50vw;
 }
 
-.comment-ref-preview > .b-comment {
+.comment-ref-preview a {
+	color: #FF6F22;
+}
+
+.comment-ref-preview a:visited {
+	color: #FF8B4D;
+}
+
+.comment-ref-preview .comment {
 	border: 1px solid #DDD;
 }
 
