@@ -34,7 +34,7 @@ class RestrictImageHosts(Extension):
             for image in root.findall('.//img'):
                 link = image.get('src')
                 if not any((pattern.match(link) for pattern in self.patterns)) and\
-                        'smiley' not in image.get('class'):
+                        'smiley' not in image.get('class', []):
                     image.tag = 'a'
                     image.attrib.pop('src')
                     image.attrib.pop('alt')
