@@ -140,6 +140,15 @@
 		e.preventDefault();
 	});
 
+	$('.comments').on('click', '.comment-resp-btn > span', function(e){
+		var textarea = $('#id_text')[0];
+		var contents = textarea.value;
+		var cursorPos = textarea.selectionStart;
+		textarea.value = contents.substring(0, cursorPos) +
+			'>>' + e.currentTarget.dataset.commentId + '\n\n' +
+			contents.substring(cursorPos, contents.length);
+	});
+
 	$(document).on('mouseenter', '.comment-ref', function(e) {
 		$.ajax({
 			type: 'GET',

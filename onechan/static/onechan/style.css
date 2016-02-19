@@ -358,6 +358,12 @@ hr {
 	justify-content: space-between;
 }
 
+.comment-resp-btn {
+	color: #FF6F22;
+	cursor: pointer;
+	margin-left: 1ch;
+}
+
 .comment-pubdate {
 	margin-right: 0;
 	margin-left: auto;
