@@ -485,6 +485,19 @@ hr {
 	border: 1px solid #DDD;
 }
 
+.select2-homeboard-icon {
+	margin-right: 1ch;
+}
+
+.select2-category {
+	font-size: 0.8em;
+}
+
+.select2-category h1 {
+	margin: 0;
+	font-size: 1.2em;
+}
+
 .debug-queries {
 	font-size: 12px;
 	font-family: monospace;

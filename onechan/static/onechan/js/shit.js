@@ -187,17 +187,35 @@
 		});
 	});
 
+	var formatCategoryChoice = function(sel) {
+		if (sel.element) {
+			if (sel.element.dataset.categoryDescr)
+				return $('<div class="select2-category"><h1>'+ sel.text +'</h1>' +
+					sel.element.dataset.categoryDescr + '</div>');
+			else
+				return $('<span>Без категории</span>');
+		} else {
+			return sel.text;
+		}
+	};
+
+
 	$('#news_addform_category').select2({
 		allowClear: true,
 		width: "50%",
+		templateResult: formatCategoryChoice,
 		tags: true,
 	});
 
 
 	var formatHomeboardChoice = function(sel) {
 		if (sel.element) {
-			return $('<span><img class="select2-homeboard-icon" src="' + sel.element.dataset.boardIcon +
-				'">' + sel.text + '</span>');
+			if (sel.element.dataset.boardIcon)
+				return $('<span><img class="select2-homeboard-icon" src="' +
+					sel.element.dataset.boardIcon + '">' + sel.text + '</span>');
+			else
+				return $('<span><span class="select2-homeboard-icon fa fa-user-secret">' +
+					'</span>Аноним</span>');
 		} else {
 			return sel.text;
 		}

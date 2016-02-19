@@ -68,8 +68,8 @@ class CategoryKeyField(forms.Field):
 
 
 def make_category_choices():
-    return [('', '', {})] +\
-        [(cat.key, cat.name, {}) for cat in Category.objects.filter(hidden=False)]
+    return [('', '', {})] + [(cat.key, cat.name, {'data-category-descr': cat.desciption})
+        for cat in Category.objects.filter(hidden=False)]
 
 def make_homeboard_choices():
     return [('', '', {})] + [(board.pk, board.name, {'data-board-icon': board.img.url})
