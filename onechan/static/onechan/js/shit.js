@@ -76,11 +76,11 @@
 		blur: sendWritingState(false)
 	})
 
-	$('#comment_form').submit(function(e){
+	var sendComment = function(form) {
 		$.ajax({
 			type: 'post',
-			url: e.target.action,
-			data: $(e.target).serializeArray(),
+			url: form.action,
+			data: $(form).serializeArray(),
 			complete: function(xhr, status) {
 				var resp = JSON.parse(xhr.responseText);
 				console.log(resp);
@@ -97,7 +97,18 @@
 			},
 			dataType: 'json',
 		});
+	};
+
+	$('#comment_form').submit(function(e) {
+		sendComment(e.target);
 		e.preventDefault();
+	});
+
+	$('#id_text').keydown(function(e) {
+		if (e.which == 13 && e.ctrlKey) {
+			sendComment(e.target.form);
+			e.preventDefault();
+		}
 	});
 
 	$('.post-rate-buttons').click(function(e){
