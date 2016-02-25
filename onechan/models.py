@@ -81,7 +81,8 @@ class Post(PubDateUtilMixin, models.Model):
 
     @property
     def comments(self):
-        return self.comment_set.select_related('author_board').order_by('pk')
+        return self.comment_set.select_related('author_board')\
+            .prefetch_related('reaction_set__image').order_by('pk')
 
     @property
     def view_count(self):
@@ -97,11 +98,17 @@ class Comment(PubDateUtilMixin, models.Model):
     pub_date = models.DateTimeField(default=timezone.now)
     text = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    reactors = models.ManyToManyField('AnonUser', through='Reaction')
+
+    @property
+    def reactions(self):
+        return sorted(self.reaction_set, key=lambda r: r.image.name)
 
     def __str__(self):
         return self.text if len(self.text) < 100 else self.text[:100] + '…'
 
 
+# TODO: rework into m2m relation between Post and AnonUser
 class Rater(models.Model):
     ip = models.GenericIPAddressField()
     post = models.ForeignKey(Post)
@@ -110,6 +117,7 @@ class Rater(models.Model):
         unique_together = ('ip', 'post')
 
 
+# TODO: rework into m2m relation between Post and AnonUser
 class Favourite(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user_ip = models.GenericIPAddressField()
@@ -132,3 +140,27 @@ class Homeboard(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class AnonUser(models.Model):
+    ip = models.GenericIPAddressField(unique=True)
+
+    def __str__(self):
+        return str(self.ip)
+
+
+class ReactionImage(models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    img = models.FileField(upload_to='reactions/')
+
+    def __str__(self):
+        return self.name
+
+
+class Reaction(models.Model):
+    user = models.ForeignKey(AnonUser, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    image = models.ForeignKey(ReactionImage, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'comment')
