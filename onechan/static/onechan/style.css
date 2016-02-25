@@ -93,6 +93,10 @@ hr {
 
 }
 
+.nodisplay {
+	display: none;
+}
+
 .sitenav a {
 	text-decoration: none;
 }
@@ -377,17 +381,36 @@ blockquote {
 	color: #777;
 	display: flex;
 	justify-content: space-between;
+	align-items: flex-end;
+}
+
+.comment-action {
+	color: #FF6F22;
+	cursor: pointer;
 }
 
 .comment-resp-btn {
-	color: #FF6F22;
-	cursor: pointer;
 	margin-left: 1ch;
+	margin-right: auto;
+}
+
+.comment-react-btn {
+	margin-left: 1ch;
+	margin-right: 0
+}
+
+.comment-reaction {
+	padding: 2px;
+}
+
+.comment-reaction > img {
+	vertical-align: middle;
+	max-height: 2em;
 }
 
 .comment-pubdate {
 	margin-right: 0;
-	margin-left: auto;
+	margin-left: 1ch;
 }
 
 .comment-author-board {
@@ -437,6 +460,16 @@ blockquote {
 .comment-form #id_text {
 	width: 100%;
 	box-sizing: border-box;
+}
+
+.react-form {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	background: #FFF1E9;
+	border: 1px solid #DDD;
+	padding: 1ch 1em;
+	min-width: 20ch;
 }
 
 .post-add-form {
@@ -508,6 +541,12 @@ blockquote {
 
 .select2-homeboard-icon {
 	margin-right: 1ch;
+}
+
+.select2-reaction-icon {
+	margin-right: 1ch;
+	max-height: 2em;
+	vertical-align: middle;
 }
 
 .select2-category {

@@ -53,6 +53,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'onechan.utils.anonuser.AnonUserMiddleware',
     'onechan.utils.stats.DailyUsersMiddleware',
     'onechan.utils.smileys.SmileyCacheMiddleware',
 ]

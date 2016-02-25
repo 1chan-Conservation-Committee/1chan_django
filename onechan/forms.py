@@ -9,7 +9,7 @@ from django.utils.html import format_html, html_safe
 from django.utils.safestring import mark_safe
 from django.forms.utils import flatatt
 from captcha.fields import ReCaptchaField
-from .models import Post, Category, Comment, Homeboard
+from .models import *
 
 
 class CustomAttrsSelect(widgets.Select):
@@ -113,3 +113,18 @@ class NewCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['text', 'author_board']
+
+
+def make_reaction_choices():
+    return [(r.pk, r.name, {'data-reaction-icon': r.img.url}) for r in ReactionImage.objects.all()]
+
+
+class CommentReactionForm(forms.Form):
+    image = forms.ModelChoiceField(
+        queryset=ReactionImage.objects.all(),
+        required=False,
+        widget=CustomAttrsSelect(
+            choices=make_reaction_choices, attrs={'id': 'reaction_select'},
+            ignore_field_choices=True
+        )
+    )

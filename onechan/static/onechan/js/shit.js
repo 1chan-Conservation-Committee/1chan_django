@@ -238,6 +238,48 @@
 		templateResult: formatHomeboardChoice,
 	})
 
+	var formatReactionChoice = function(sel) {
+		if (sel.element) {
+			if (sel.element.dataset.reactionIcon)
+				return $('<span><img class="select2-reaction-icon" src="' +
+					sel.element.dataset.reactionIcon + '">' + sel.text + '</span>');
+		} else {
+			return sel.text;
+		}
+	};
+
+	$('#reaction_select').select2({
+		allowClear: true,
+		width: "100%",
+		templateResult: formatReactionChoice,
+	})
+
+	$('.comments').on('click', '.comment-react-btn > span', function(e) {
+		window.currentReactUrl = e.target.dataset.reactUrl;
+		$('#react_form').removeClass('nodisplay');
+	});
+
+	$('#react_cancel').click(function(e) {
+		$('#react_form').addClass('nodisplay');
+	});
+
+	$('#react_form').submit(function(e) {
+		$.ajax({
+			type: 'post',
+			url: window.currentReactUrl,
+			data: $(e.target).serializeArray(),
+			complete: function(xhr, status) {
+				var resp = JSON.parse(xhr.responseText);
+				console.log(resp);
+				if (resp.success) {
+					$('#react_form').addClass('nodisplay');
+				};
+			},
+			dataType: 'json',
+		});
+		e.preventDefault();
+	});
+
 	$('.sitenav-show-collapsed').click(function(e){
 		$('#nav_collapse').toggleClass('sitenav-collapsed');
 	});

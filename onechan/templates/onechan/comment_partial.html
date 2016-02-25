@@ -10,8 +10,18 @@
 	<span class="comment-id">
 		<a href="{% url 'onechan:show_post' post_id=comment.post_id %}#comment_{{ comment.id }}">№{{comment.id}}</a>
 	</span>
-	<span class="comment-resp-btn" data-comment-id="{{comment.id}}" title="Ответить на комментарий">
-		<span class="fa fa-reply" data-comment-id="{{comment.id}}" ></span>
+	<span class="comment-resp-btn comment-action" data-comment-id="{{comment.id}}" title="Ответить на комментарий">
+		<span class="fa fa-reply" data-comment-id="{{comment.id}}"></span>
+	</span>
+	{% for reaction in comment.reactions %}
+		<span class="comment-reaction" title="{{ reaction.name }}">
+			<img src={{ reaction.url }} >
+			<span class="comment-reaction-count">{{ reaction.count }}</span>
+		</span>
+	{% endfor %}
+	{% url 'onechan:comment_react' comment_id=comment.id as react_url %}
+	<span class="comment-react-btn comment-action" data-react-url="{{react_url}}" title="Добавить реакцию">
+		<span class="fa fa-smile-o" data-react-url="{{react_url}}"></span>
 	</span>
 	<span class="comment-pubdate">
 		{% if comment.is_pubdate_within_week %}

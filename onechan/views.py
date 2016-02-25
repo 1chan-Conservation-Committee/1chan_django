@@ -14,8 +14,8 @@ from django.contrib import messages
 from django.contrib.syndication.views import Feed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
-from .models import Post, Category, Comment, Favourite, Smiley
-from .forms import NewPostForm, NewCommentForm
+from .models import *
+from .forms import NewPostForm, NewCommentForm, CommentReactionForm
 from .utils import notify
 from .utils.stats import update_posting_stats
 
@@ -89,7 +89,11 @@ def category_list(request):
 def show_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     post.add_viewer(request.META['REMOTE_ADDR'])
-    return render(request, 'onechan/post.html', {'post': post, 'comment_form': NewCommentForm()})
+    return render(request, 'onechan/post.html', {
+        'post': post,
+        'comment_form': NewCommentForm(),
+        'react_form': CommentReactionForm(),
+    })
 
 def add_post(request):
     if request.method == 'GET':
@@ -162,6 +166,37 @@ def get_comment(request, comment_id):
             context={'comment': comment},
             request=request
         )
+    })
+
+def comment_react(request, comment_id):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    form = CommentReactionForm(request.POST)
+    if form.is_valid():
+        comment = Comment.objects.get(pk=comment_id)
+        r = Reaction(
+            image=form.cleaned_data['image'],
+            user=request.anon_user,
+            comment=comment,
+        )
+        try:
+            r.save()
+        except IntegrityError:
+            return JsonResponse({
+                'success': False,
+                'error': 'already_reacted',
+            })
+        notify({
+            'type': 'new_reaction',
+            'room': 'news_' + str(comment.post_id),
+            'data': {
+                'id': comment.id,
+                'name': r.image.name,
+                'img': r.image.img.url,
+            }
+        })
+    return JsonResponse({
+        'success': True
     })
 
 def rate_post(request, post_id):

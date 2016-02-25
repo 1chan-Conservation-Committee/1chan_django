@@ -102,7 +102,19 @@ class Comment(PubDateUtilMixin, models.Model):
 
     @property
     def reactions(self):
-        return sorted(self.reaction_set, key=lambda r: r.image.name)
+        racts = {}
+        for reaction in self.reaction_set.all():
+            name = reaction.image.name
+            if name in racts:
+                racts[name]['count'] += 1
+            else:
+                racts[name] = {
+                    'name': name,
+                    'url': reaction.image.img.url,
+                    'count': 1
+                }
+
+        return sorted(racts.values(), key=lambda r: r['name'])
 
     def __str__(self):
         return self.text if len(self.text) < 100 else self.text[:100] + '…'

@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib import admin
-from .models import Post, Category, Comment, Smiley, Homeboard
+from .models import *
 
 
-admin.site.register([Category, Comment, Smiley, Homeboard])
+admin.site.register([Category, Comment, Smiley, Homeboard, ReactionImage])
 
 
 class PostApproverForm(forms.ModelForm):

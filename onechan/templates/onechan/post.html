@@ -45,4 +45,10 @@ window.wsRoom = 'news_{{ post.id }}';
 	<p><input type="submit" value="Отправить"></p>
 </form>
 
+<form method="post" id="react_form" class="react-form nodisplay">
+	{% csrf_token %}
+	<div>{{ react_form.image }}</div>
+	<div><input type="submit" value="Отправить"><input id="react_cancel" type="button" value="Отменить"></div>
+</form>
+
 {% endblock %}
