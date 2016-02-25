@@ -332,7 +332,7 @@ hr {
 	overflow: auto;
 }
 
-.comment-body blockquote {
+blockquote {
 	margin-left: 0;
 	padding-left: 1ch;
 	color: green;
