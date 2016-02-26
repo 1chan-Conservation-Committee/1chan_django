@@ -122,8 +122,12 @@ def add_post(request):
                 })
 
 def last_comments(request):
-    comments = Comment.objects.select_related('post').order_by('-pk')[:20]
-    return render(request, 'onechan/last_comments.html', {'comments': comments})
+    comments = Comment.objects.select_related('post').select_related('author_board')\
+        .prefetch_related('reaction_set__image').order_by('-pk')[:20]
+    return render(request, 'onechan/last_comments.html', {
+        'comments': comments,
+        'react_form': CommentReactionForm(),
+    })
 
 def add_comment(request, post_id):
     if request.method == 'POST':

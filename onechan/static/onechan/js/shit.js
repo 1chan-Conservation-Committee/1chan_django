@@ -254,10 +254,13 @@
 		templateResult: formatReactionChoice,
 	})
 
-	$('.comments').on('click', '.comment-react-btn > span', function(e) {
+	var reactionClickhandler = function(e) {
 		window.currentReactUrl = e.target.dataset.reactUrl;
 		$('#react_form').removeClass('nodisplay');
-	});
+	}
+
+	$('.comments').on('click', '.comment-react-btn > span', reactionClickhandler);
+	$('.last-comments').on('click', '.comment-react-btn > span', reactionClickhandler);
 
 	$('#react_cancel').click(function(e) {
 		$('#react_form').addClass('nodisplay');
