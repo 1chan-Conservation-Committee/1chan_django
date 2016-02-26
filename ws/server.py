@@ -149,7 +149,7 @@ def redis_listener():
         if 'new_' in msg['type']:
             room = msg.get('room') or DEFAULT_ROOM_NAME
             msg['room'] = room
-            if msg['type'] == 'new_comment':
+            if msg['type'] in ('new_comment', 'new_reaction'):
                 Room.broadcast_to_room('last_comments', msg)
         elif False:
             pass # ...

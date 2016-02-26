@@ -59,6 +59,10 @@
 				elemColl.text(msg.data.rating);
 				break;
 			}
+			case "new_reaction": {
+				updateCommentReactions(msg);
+				break;
+			}
 		};
 	};
 
@@ -197,6 +201,21 @@
 			}
 		});
 	});
+
+	var updateCommentReactions = function(msg) {
+		var selector = '#comment_' + msg.data.id + ' .comment-reaction[title="' + msg.data.name +
+			'"] .comment-reaction-count';
+		var coll = $(selector);
+		if (coll.length > 0) {
+			var node = coll[0];
+			node.textContent = parseInt(node.textContent) + 1;
+		} else {
+			$('#comment_' + msg.data.id + ' .comment-resp-btn').after(
+				'<span class="comment-reaction" title="' + msg.data.name + '">' +
+				'<img src=' + msg.data.img + '><span class="comment-reaction-count">1</span></span>'
+			);
+		}
+	}
 
 	var formatCategoryChoice = function(sel) {
 		if (sel.element) {
