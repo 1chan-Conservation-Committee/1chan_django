@@ -114,7 +114,7 @@ class Comment(PubDateUtilMixin, models.Model):
                     'count': 1
                 }
 
-        return sorted(racts.values(), key=lambda r: r['name'])
+        return sorted(racts.values(), key=lambda r: (r['count'], r['name']), reverse=True)[:3]
 
     def __str__(self):
         return self.text if len(self.text) < 100 else self.text[:100] + '…'
