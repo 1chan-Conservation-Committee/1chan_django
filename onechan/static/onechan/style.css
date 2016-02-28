@@ -19,7 +19,7 @@ hr {
 
 	.container {
 		width: 100%;
-		min-height: 100vh;
+		height: 100vh;
 		display: flex;
 		flex-direction: row;
 	}
@@ -27,7 +27,7 @@ hr {
 	.sitenav {
 		color: #FFEBA7;
 		text-shadow: 1px 1px 0 #5AA7FC;
-		width: 30ch;
+		width: 40ch;
 		background-color: #81BCFE;
 		padding: 1ch;
 		box-shadow: 3px 1px #DDD;
@@ -45,14 +45,14 @@ hr {
 	}
 
 	.content {
-		max-width: 100ch;
+		overflow: auto;
 		flex-grow: 1;
 		padding: 2em;
 	}
 
 }
 
-@media (max-width: 600px) {
+@media (max-width: 699px) {
 
 	.container {
 		width: 100%;
@@ -88,7 +88,7 @@ hr {
 
 	.content {
 		flex-grow: 1;
-		padding: 0.5em;
+		padding: 2px;
 	}
 
 }
@@ -225,6 +225,15 @@ hr {
 	margin: 2em auto;
 }
 
+@media screen and (min-width: 700px) {
+
+	.post {
+		max-width: 100ch;
+		margin-left: 0;
+	}
+
+}
+
 .post h2 {
 	font-size: 1.2em;
 }
@@ -317,9 +326,29 @@ hr {
 .comment {
 	font-size: 0.9em;
 	padding: 0.5em 1ch;
-	margin: 0.5em;
+	margin: 0.3em;
 	background-color: #EBF4FF;
 	box-shadow: 2px 2px #DDD;
+}
+
+@media screen and (min-width: 700px) {
+
+	.comments {
+		max-width: 100ch;
+	}
+
+}
+
+@media (max-width: 699px) {
+
+	.comments {
+		margin: 0;
+	}
+
+	.comment {
+		margin: 0.3em 0;
+	}
+
 }
 
 .comment > header > h1 {
@@ -401,6 +430,7 @@ blockquote {
 
 .comment-reaction {
 	padding: 2px;
+	white-space: nowrap;
 }
 
 .comment-reaction > img {
@@ -425,8 +455,7 @@ blockquote {
 
 .post-stats {
 	color: #777;
-	font-size: 0.9em;
-	font-style: italic;
+	font-size: 0.8em;
 	padding: 0.5em 1ch;
 	background-color: #FFF1E9;
 }
@@ -513,6 +542,10 @@ blockquote {
 
 .categories-entry h2 {
 	font-size: 1.2em;
+}
+
+.last-comments {
+	max-width: 100ch;
 }
 
 #comment_ref_previews {
