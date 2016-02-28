@@ -36,6 +36,7 @@ textarea {
 		color: #FFEBA7;
 		text-shadow: 1px 1px 0 #5AA7FC;
 		width: 30ch;
+		flex-shrink: 0;
 		background-color: #81BCFE;
 		padding: 1ch;
 		box-shadow: 3px 1px #DDD;
