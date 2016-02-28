@@ -15,6 +15,14 @@ hr {
     padding: 0; 
 }
 
+input {
+	box-sizing: border-box;
+}
+
+textarea {
+	box-sizing: border-box;
+}
+
 @media screen and (min-width: 700px) {
 
 	.container {
@@ -31,6 +39,10 @@ hr {
 		background-color: #81BCFE;
 		padding: 1ch;
 		box-shadow: 3px 1px #DDD;
+	}
+
+	.sitenav-mobile-header {
+		flex-direction: column;
 	}
 
 	.sitenav-logo-image {
@@ -124,6 +136,10 @@ hr {
 	margin: 0;
 }
 
+.sitenav-mobile-header {
+	display: flex;
+}
+
 .sitenav-logo {
 	position: relative;
 	display: block;
@@ -181,6 +197,10 @@ hr {
 .sitenav-links {
 	margin-top: 1em;
 	font-weight: bold;
+}
+
+.sitenav-mobile-header .sitenav-links {
+	margin-bottom: 0;
 }
 
 .sitenav-links .fa {
@@ -516,6 +536,18 @@ blockquote {
 
 .post-add-form-field textarea {
 	min-width: 50%;
+}
+
+@media (max-width: 699px) {
+
+	.post-add-form-field input {
+		width: 100%;
+	}
+
+	.post-add-form-field textarea {
+		width: 100%;
+	}
+
 }
 
 .post-add-form-field input[type=submit] {

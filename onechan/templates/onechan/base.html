@@ -17,20 +17,22 @@
 <body>
 <div class="container">
 <nav class="sitenav">
-	<header>
-		<a href="{% url 'onechan:index' %}" class="sitenav-logo">
-			<img class="sitenav-logo-image" src="{% static 'onechan/img/chiyo.png' %}">
-			<div class="sitenav-logo-stats">
-				Вижу <span id="stats_online">-</span>!
-			</div>
-		</a>
-	</header>
+	<div class="sitenav-mobile-header">
+		<header>
+			<a href="{% url 'onechan:index' %}" class="sitenav-logo">
+				<img class="sitenav-logo-image" src="{% static 'onechan/img/chiyo.png' %}">
+				<div class="sitenav-logo-stats">
+					Вижу <span id="stats_online">-</span>!
+				</div>
+			</a>
+		</header>
+		<ul class="sitenav-links">
+			<li><span class="fa fa-fw fa-check-circle"></span><a href="{% url 'onechan:approved_posts' %}">Одобренные</a></li>
+			<li><span class="fa fa-fw fa-question-circle"></span><a href="{% url 'onechan:all_posts' %}">Все</a></li>
+			<li><span class="fa fa-fw fa-newspaper-o"></span><a href="{% url 'onechan:add_post' %}">Добавить новость</a></li>
+		</ul>
+	</div>
 	<div id="nav_collapse" class="sitenav-collapsed">
-	<ul class="sitenav-links">
-		<li><span class="fa fa-fw fa-check-circle"></span><a href="{% url 'onechan:approved_posts' %}">Одобренные</a></li>
-		<li><span class="fa fa-fw fa-question-circle"></span><a href="{% url 'onechan:all_posts' %}">Все</a></li>
-		<li><span class="fa fa-fw fa-newspaper-o"></span><a href="{% url 'onechan:add_post' %}">Добавить новость</a></li>
-	</ul>
 	<hr>
 	<ul class="sitenav-links">
 		<li><span class="fa fa-fw fa-star"></span><a href="{% url 'onechan:favourite_posts' %}">Избранное</a></li>
