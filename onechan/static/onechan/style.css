@@ -412,6 +412,19 @@ blockquote {
 	color: black;
 }
 
+.spoiler a {
+	color: black;
+	transition: color 0.3s;
+}
+
+.spoiler:hover a {
+	color: #FF6F22;
+}
+
+.spoiler:hover a:visited {
+	color: #FF8B4D;
+}
+
 .spoiler:hover {
 	background-color: inherit;
 	transition: background-color 0.3s;
