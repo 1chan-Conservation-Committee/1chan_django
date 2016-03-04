@@ -120,6 +120,18 @@ class Comment(PubDateUtilMixin, models.Model):
         return self.text if len(self.text) < 100 else self.text[:100] + '…'
 
 
+class Link(models.Model):
+    author = models.ForeignKey('AnonUser')
+    pub_date = models.DateTimeField(default=timezone.now, db_index=True)
+    uri = models.CharField(max_length=256)
+    title = models.CharField(max_length=128)
+    rating = models.SmallIntegerField(default=0)
+    raters = models.ManyToManyField('AnonUser', related_name='rated_links')
+
+    def __str__(self):
+        return self.title
+
+
 # TODO: rework into m2m relation between Post and AnonUser
 class Rater(models.Model):
     ip = models.GenericIPAddressField()
