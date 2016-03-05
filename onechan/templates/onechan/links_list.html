@@ -1,0 +1,61 @@
+{% extends 'onechan/base.html' %}
+{% load staticfiles %}
+{% block title %}
+Интересные ссылки
+{% endblock %}
+{% block content %}
+<header>
+	<h1>Интересные ссылки</h1>
+	<hr>
+</header>
+
+{% for link in links %}
+<article class="link">
+	<header><h2><a href="{{link.uri}}" title="{{link.title}}">{{link.title}}</a> <span class="link-uri">{{link.uri}}</span></h2></header>
+	<footer>
+		<time datetime="{{link.pub_date}}" class="link-pubdate">{{link.pub_date | date:'DATETIME_FORMAT'}}</time>
+	</footer>
+</article>
+{% endfor %}
+
+<form action="{% url 'onechan:add_link' %}" method="post" class="link-add-form">
+{% csrf_token %}
+<div class="link-add-form-input">
+	<h2>Ссылка</h2>
+	{{link_form.uri.errors}}
+	{{link_form.uri}}
+</div>
+<div class="link-add-form-input">
+	<h2>Заголовок</h2>
+	{{link_form.title.errors}}
+	{{link_form.title}}
+</div>
+<div class="link-add-form-input">
+	{{link_form.captcha.errors}}
+	{{link_form.captcha}}
+</div>
+<input type="submit" value="Добавить ссылку">
+</form>
+
+{% if links %}
+<footer class="paginator">
+	<ul>
+		<li><a href="{{request.path}}?page={{links.paginator.page_range|first}}">&lArr;</a></li>
+		{% if links.has_previous %}
+		<li><a href="{{request.path}}?page={{links.previous_page_number}}">&larr;</a></li>
+		{% endif %}
+		{% for page_num in links.paginator.page_range %}
+			{% if page_num == links.number %}
+			<li><span>{{page_num}}</span></li>
+			{% else %}
+			<li><a href="{{request.path}}?page={{page_num}}">{{page_num}}</a></li>
+			{% endif %}
+		{% endfor %}
+		{% if links.has_next %}
+		<li><a href="{{request.path}}?page={{links.next_page_number}}">&rarr;</a></li>
+		{% endif %}
+		<li><a href="{{request.path}}?page={{links.paginator.page_range|last}}">&rArr;</a></li>
+	</ul>
+</footer>
+{% endif %}
+{% endblock %}

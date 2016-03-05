@@ -1,7 +1,8 @@
+from datetime import date
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect,\
     HttpResponseForbidden, HttpResponseNotAllowed, JsonResponse
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -15,7 +16,7 @@ from django.contrib.syndication.views import Feed
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from .models import *
-from .forms import NewPostForm, NewCommentForm, CommentReactionForm
+from .forms import NewPostForm, NewCommentForm, CommentReactionForm, NewLinkForm
 from .utils import notify
 from .utils.stats import update_posting_stats
 
@@ -52,8 +53,10 @@ class PostsListView(View):
         except EmptyPage:
             return HttpResponseRedirect(request.path +
                 '?' + urlencode({'page': pgtr.num_pages}))
+        links = Link.objects.filter(pub_date__date=date.today()).order_by('-pub_date')
         return render(request, "onechan/posts_list.html", {
             'posts': posts,
+            'links': links,
             'title': self.get_title(request, *args, **kwargs)
         })
 
@@ -233,6 +236,32 @@ def set_favourite(request, post_id):
         'favourite': value,
         'post_id': post.id
     })
+
+
+class LinksListView(ListView):
+    model = Link
+    queryset = Link.objects.order_by('-id')
+    template_name = 'onechan/links_list.html'
+    paginate_by = 10
+    context_object_name = 'links'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['link_form'] = NewLinkForm()
+        return context
+
+
+def add_link(request):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    form = NewLinkForm(request.POST)
+    if form.is_valid():
+        link = form.save(commit=False)
+        link.author = request.anon_user
+        link.save()
+        return redirect(reverse('onechan:links'))
+    else:
+        return render(request, 'onechan/links_list.html', {'link_form': form})
 
 
 class NewsFeed(Feed):

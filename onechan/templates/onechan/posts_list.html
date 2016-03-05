@@ -9,9 +9,26 @@
 	<hr>
 </header>
 
-{% for post in posts %}
-{% include 'onechan/post_partial.html' with full_text=False %}
-{% endfor %}
+<div class="posts-container">
+	<div class="posts">
+	{% for post in posts %}
+	{% include 'onechan/post_partial.html' with full_text=False %}
+	{% endfor %}
+	</div>
+	<aside class="links-recent">
+		<header>
+			<h2>Интересные ссылки</h2>
+		</header>
+		{% for link in links %}
+		<article class="link-recent">
+			<a href="{{link.uri}}" title="{{link.title}}" target="_blank">{{link.title}}</a>
+		</article>
+		{% endfor %}
+		<footer>
+			<a href="{% url 'onechan:links' %}">Все ссылки</a>
+		</footer>
+	</aside>
+</div>
 
 {% if posts %}
 <footer class="paginator">

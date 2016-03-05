@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'^comments/(?P<comment_id>[0-9]+)$', views.get_comment, name='get_comment'),
     url(r'^comments/(?P<comment_id>[0-9]+)/react$', views.comment_react, name='comment_react'),
 
+    url(r'^links$', views.LinksListView.as_view(), name='links'),
+    url(r'^links/add$', views.add_link, name='add_link'),
+
     url(r'^rss/news$', views.NewsFeed(), name='news_feed'),
     url(r'^rss/news/all$', views.NewsFeed(all=True), name='news_all_feed'),
 

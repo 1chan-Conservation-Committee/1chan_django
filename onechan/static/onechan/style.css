@@ -1,7 +1,7 @@
 
 body {
 	color: #000;
-	font-size: 16px;
+	font-size: 15px;
 	font-family: 'Noto Sans', 'Open Sans', sans-serif;
 	margin: 0;
 }
@@ -35,7 +35,7 @@ textarea {
 	.sitenav {
 		color: #FFEBA7;
 		text-shadow: 1px 1px 0 #5AA7FC;
-		width: 30ch;
+		width: 32ch;
 		flex-shrink: 0;
 		background-color: #81BCFE;
 		padding: 1ch;
@@ -240,6 +240,50 @@ textarea {
 .paginator li {
 	display: inline;
 	margin: 1ch;
+}
+
+.posts-container {
+	display: flex;
+}
+
+.posts {
+	flex-grow: 1;
+}
+
+@media (max-width: 699px) {
+
+	.posts-container {
+		flex-direction: column;
+	}
+
+}
+
+.links-recent {
+	flex-grow: 0;
+	flex-shrink: 0;
+	align-self: flex-start;
+	min-width: 20ch;
+	margin-left: 1em;
+	padding: 0.5em 2ch;
+	font-size: 0.9em;
+	border: 1px solid #DDD;
+	box-shadow: 1px 2px #DDD;
+}
+
+.links-recent h2 {
+	font-size: 1.5em;
+	margin: 0;
+	margin-bottom: 1em;
+}
+
+.link-recent {
+	margin: 0.5em 0;
+}
+
+.links-recent footer {
+	margin-top: 1em;
+	font-size: 0.9em;
+	text-align: center;
 }
 
 .post {
@@ -470,7 +514,7 @@ blockquote {
 
 .comment-reaction > img {
 	vertical-align: middle;
-	max-height: 2em;
+	max-height: 2.5em;
 }
 
 .comment-pubdate {
@@ -573,7 +617,40 @@ blockquote {
 	margin: 0.5em 0;
 }
 
-.post-add-form-field .errorlist {
+.link-add-form {
+	margin: 1em;
+	padding: 0.5em 1ch;
+	border: 1px solid #DDD;
+	box-shadow: 2px 2px #DDD;
+	max-width: 70ch;
+}
+
+.link-add-form-input {
+	width: 100%;
+}
+
+.link-add-form-input input {
+	width: 100%;
+}
+
+.link-add-form-input h2 {
+	margin: 0;
+	font-size: 1em;
+}
+
+.link h2 {
+	font-size: 1.2em;
+	margin: 0;
+	margin-top: 1em;
+}
+
+.link-uri {
+	font-size: 0.7em;
+	font-weight: normal;
+	color: #999;
+}
+
+.errorlist {
 	list-style: none;
 	padding: 0.2em;
 	margin: 0.5em 0;

@@ -115,6 +115,14 @@ class NewCommentForm(forms.ModelForm):
         fields = ['text', 'author_board']
 
 
+class NewLinkForm(forms.ModelForm):
+    captcha = ReCaptchaField()
+
+    class Meta:
+        model = Link
+        fields = ['uri', 'title']
+
+
 def make_reaction_choices():
     return [(r.pk, r.name, {'data-reaction-icon': r.img.url}) for r in ReactionImage.objects.all()]
 
