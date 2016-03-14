@@ -97,7 +97,14 @@
 						$('#comment_form_error_'+key).text(val);
 					});
 				};
-				window.grecaptcha.reset();
+				if (resp.captcha_required) {
+					$('.lazy-captcha-allowed').addClass('nodisplay');
+					$('.lazy-captcha-recaptcha').removeClass('nodisplay');
+					window.grecaptcha.reset();
+				} else {
+					$('.lazy-captcha-allowed').removeClass('nodisplay');
+					$('.lazy-captcha-recaptcha').addClass('nodisplay');
+				}
 			},
 			dataType: 'json',
 		});

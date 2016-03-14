@@ -2,6 +2,7 @@ from itertools import chain
 from django.core.exceptions import ValidationError
 import django.forms as forms
 import django.forms.widgets as widgets
+from django.template.loader import render_to_string
 from django.utils.encoding import (
     force_str, force_text, python_2_unicode_compatible,
 )
@@ -67,6 +68,44 @@ class CategoryKeyField(forms.Field):
             raise ValidationError('Данная категория не существует')
 
 
+class LazyCaptcha(forms.Widget):
+
+    def __init__(self, captcha_widget, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.captcha = captcha_widget
+
+    def render(self, name, value, attrs=None):
+        return mark_safe(render_to_string('onechan/lazy_captcha.html', {
+            'recaptcha': self.captcha.render(name, value, attrs),
+            'check_required': self.check_required,
+        }))
+
+    def value_from_datadict(self, *args, **kwargs):
+        return self.captcha.value_from_datadict(*args, **kwargs)
+
+
+class LazyCaptchaField(ReCaptchaField):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.widget = LazyCaptcha(self.widget)
+
+    def clean(self, value):
+        if not self.check_required:
+            return True
+        else:
+            return super().clean(value)
+
+    @property
+    def check_required(self):
+        return self._check_required
+
+    @check_required.setter
+    def check_required(self, value):
+        self._check_required = value
+        self.widget.check_required = value
+
+
 def make_category_choices():
     return [('', '', {})] + [(cat.key, cat.name, {'data-category-descr': cat.desciption})
         for cat in Category.objects.filter(hidden=False)]
@@ -100,7 +139,7 @@ class NewPostForm(forms.ModelForm):
 
 
 class NewCommentForm(forms.ModelForm):
-    captcha = ReCaptchaField()
+    captcha = LazyCaptchaField()
     author_board = forms.ModelChoiceField(
         queryset=Homeboard.objects.all(),
         required=False,
@@ -113,6 +152,17 @@ class NewCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['text', 'author_board']
+
+    def __init__(self, *args, **kwargs):
+        self.ip = kwargs.pop('ip')
+        super().__init__(*args, **kwargs)
+        captcha_field = self.fields['captcha']
+        captcha_field.check_required = self.is_captcha_required(self.ip)
+
+    @staticmethod
+    def is_captcha_required(ip):
+        comments_made = cache.get('onechan_captcha_comments_' + str(ip)) or 0
+        return comments_made == 0
 
 
 class NewLinkForm(forms.ModelForm):

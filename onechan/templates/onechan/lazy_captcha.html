@@ -1,0 +1,4 @@
+<div class="lazy-captcha">
+	<div class="lazy-captcha-allowed {% if check_required %}nodisplay{% endif %}">Вам не нужно вводить капчу.</div>
+	<div class="lazy-captcha-recaptcha {% if not check_required %}nodisplay{% endif %}">{{ recaptcha | safe }}</div>
+</div>

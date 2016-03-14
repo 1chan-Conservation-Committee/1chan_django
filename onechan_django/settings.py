@@ -159,6 +159,8 @@ RECAPTCHA_PUBLIC_KEY = None
 RECAPTCHA_PRIVATE_KEY = None
 NOCAPTCHA = True
 
+# this many comments will be allowed to be made without completing the captcha
+COMMENTS_WITHOUT_CAPTCHA = 5
 
 # A list of patterns which will be matched against image sources.
 # If none of them match, the image will be converted into a hyperlink.

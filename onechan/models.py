@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.core.cache import cache
+from django.conf import settings
 from .utils.stats import get_view_count, update_view_count
 
 
@@ -99,6 +101,12 @@ class Comment(PubDateUtilMixin, models.Model):
     text = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     reactors = models.ManyToManyField('AnonUser', through='Reaction')
+
+    def save(self):
+        super().save()
+        comments_made = cache.get('onechan_captcha_comments_' + str(self.author_ip)) or 0
+        cache.set('onechan_captcha_comments_' + str(self.author_ip),
+            (comments_made + 1) % (settings.COMMENTS_WITHOUT_CAPTCHA + 1))
 
     @property
     def reactions(self):

@@ -91,10 +91,11 @@ def category_list(request):
 
 def show_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    post.add_viewer(request.META['REMOTE_ADDR'])
+    ip = request.META['REMOTE_ADDR']
+    post.add_viewer(ip)
     return render(request, 'onechan/post.html', {
         'post': post,
-        'comment_form': NewCommentForm(),
+        'comment_form': NewCommentForm(ip=ip),
         'react_form': CommentReactionForm(),
     })
 
@@ -137,8 +138,9 @@ def add_comment(request, post_id):
         post = get_object_or_404(Post, pk=post_id)
         if post.closed:
             return HttpResponseForbidden()
-        comment = Comment(author_ip=request.META['REMOTE_ADDR'], post=post)
-        form = NewCommentForm(request.POST, instance=comment)
+        ip = request.META['REMOTE_ADDR']
+        comment = Comment(author_ip=ip, post=post)
+        form = NewCommentForm(request.POST, ip=ip, instance=comment)
         if form.is_valid():
             form.save()
             if post.bumpable:
@@ -158,9 +160,16 @@ def add_comment(request, post_id):
                 }
             })
             update_posting_stats()
-            return JsonResponse({'success': True})
+            return JsonResponse({
+                'success': True,
+                'captcha_required': NewCommentForm.is_captcha_required(ip),
+            })
         else:
-            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+            return JsonResponse({
+                'success': False,
+                'errors': form.errors,
+                'captcha_required': NewCommentForm.is_captcha_required(ip),
+            }, status=400)
     else:
         return HttpResponseNotAllowed(['POST'])
 
