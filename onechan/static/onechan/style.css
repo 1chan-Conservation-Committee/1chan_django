@@ -483,6 +483,26 @@ blockquote {
 	visibility: visible;
 }
 
+.youtube-container {
+	display: inline-block;
+	position: relative;
+}
+
+.youtube-container::before {
+	font-family: 'FontAwesome';
+	font-size: 3em;
+	content: "\f16a";
+	color: #FF6F22;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.youtube-container.video-loaded::before {
+	display: none;
+}
+
 .comment-attrs {
 	font-size: 0.8em;
 	color: #777;

@@ -313,4 +313,16 @@
 		$('#nav_collapse').toggleClass('sitenav-collapsed');
 	});
 
+	$('.youtube-container').click(function(e) {
+		console.log(e.currentTarget);
+		var el = $(e.currentTarget || e.target);
+		if (el.data('videoLoaded'))
+			return;
+		el.empty();
+		el.append('<iframe type="text/html" width="480" height="360" frameborder="0" ' +
+			'src="https://www.youtube.com/embed/'+ el.data('videoId') +'?autoplay=1&modestbranding=1">');
+		el.data('videoLoaded', true);
+		el.addClass('video-loaded');
+	});
+
 })();

@@ -133,6 +133,39 @@ class Autolinks(Extension):
         md.preprocessors.add('autolinks', self.LinkPreprocessor(), '_end')
 
 
+class YoutubeEmbedder(Extension):
+
+    class YoutubeProcessor(Treeprocessor):
+
+        YOUTUBE_RE = re.compile(r'''
+            https?://(?:www\.)?           # scheme and optional www prefix
+            (?:                           # then either
+                youtube\.com/watch\?.*v=  # traditional url with any query args before v=<id>
+            |                             # or
+                youtu\.be/                # new 'share' url
+            )
+            (?P<id>[^&]+).*               # finally, capture the video id and ignore irrelevant shit
+            ''',
+            re.VERBOSE
+        )
+
+        def run(self, root):
+            for link in root.findall('.//a'):
+                href = link.get('href')
+                match = self.YOUTUBE_RE.match(href)
+                if match:
+                    link.tag = 'div'
+                    link.attrib.pop('href')
+                    link.set('class', 'youtube-container')
+                    link.set('data-video-id', match.group('id'))
+                    link.text = ''
+                    img = etree.Element('img',
+                        src='https://img.youtube.com/vi/{}/mqdefault.jpg'.format(match.group('id')))
+                    link.append(img)
+
+    def extendMarkdown(self, md, md_globals):
+        md.treeprocessors.add('youtube', self.YoutubeProcessor(), '_end')
+
 md = Markdown(extensions=[
     EscapeHtml(),
     RestrictImageHosts(settings.ALLOWED_IMAGE_PATTERNS),
@@ -140,6 +173,7 @@ md = Markdown(extensions=[
     Spoilers(),
     CommentRefs(),
     Autolinks(),
+    YoutubeEmbedder(),
 ])
 
 # sorry mommy i am a dirty monkey patcher
