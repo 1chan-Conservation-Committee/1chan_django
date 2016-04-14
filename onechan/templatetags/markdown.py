@@ -7,6 +7,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from markdown import Markdown
 from markdown.extensions import Extension
+from markdown.preprocessors import Preprocessor
 from markdown.treeprocessors import Treeprocessor
 from markdown.inlinepatterns import Pattern
 from markdown.util import etree
@@ -120,12 +121,25 @@ class CommentRefs(Extension):
         md.inlinePatterns.add('comment_refs', self.CommentRefPattern(), '_end')
 
 
+class Autolinks(Extension):
+
+    class LinkPreprocessor(Preprocessor):
+        LINK_RE = re.compile(r'(https?://\S+)')
+
+        def run(self, lines):
+            return [self.LINK_RE.sub(r'[\1](\1)', line) for line in lines]
+
+    def extendMarkdown(self, md, md_globals):
+        md.preprocessors.add('autolinks', self.LinkPreprocessor(), '_end')
+
+
 md = Markdown(extensions=[
     EscapeHtml(),
     RestrictImageHosts(settings.ALLOWED_IMAGE_PATTERNS),
     Smileys(),
     Spoilers(),
     CommentRefs(),
+    Autolinks(),
 ])
 
 # sorry mommy i am a dirty monkey patcher
