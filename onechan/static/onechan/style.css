@@ -220,6 +220,11 @@ textarea {
 	color: #FF8B4D;
 }
 
+.content > header {
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+
 .content > header > hr {
 	border-color: #EEE;
 	border-width: 0.5em;
@@ -301,6 +306,8 @@ textarea {
 
 .post h2 {
 	font-size: 1.2em;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
 }
 
 .post-favicon {
